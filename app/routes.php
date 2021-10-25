@@ -47,7 +47,6 @@ return function (App $app) {
     });
 
 
-
     //Clientes
     $app->group('/clientes', function (Group $group){
 

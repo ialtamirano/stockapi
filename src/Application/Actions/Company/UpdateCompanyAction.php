@@ -16,7 +16,7 @@ class UpdateCompanyAction extends CompanyAction
         $companyId = (int) $this->resolveArg('id');
         $company = $this->getFormData();
        
-        $company->id = $this->companyRepository->update($companyId,$company);
+        $company->id = $this->companyRepository->update($companyId, $company);
 
         $this->logger->info("Company of id `$company->id` was updated.");
 
