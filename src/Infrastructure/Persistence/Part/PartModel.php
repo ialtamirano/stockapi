@@ -27,29 +27,24 @@ class PartModel implements PartRepository
         $this->connection = $connection;
     }
 
-  
 
-    public function findAll():array{
+    public function findAll():array
+    {
 
         $parts = R::findAll('part');
 
         return R::exportAll($parts);;
-
-       
     }
 
     public function findById($id)
     {
 
-        $part = R::load( 'part', $id );
+        $part = R::load('part', $id);
 
       
         if ( $part->id == 0) {
             throw new PartNotFoundException();
         }
-
-
-
         return $part;
     }
 
@@ -65,11 +60,10 @@ class PartModel implements PartRepository
     
     public function update($id, $part){
 
-        $bean = R::load( 'part', $id );
+        $bean = R::load('part', $id);
 
         $bean->import($part);
 
         return $id = R::store($bean);
     }
-
 }

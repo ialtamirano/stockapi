@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Company;
 
-
 use App\Domain\Company\CompanyNotFoundException;
 use App\Domain\Company\CompanyRepository;
 
@@ -28,48 +27,43 @@ class CompanyModel implements CompanyRepository
     }
 
   
-
-    public function findAll():array{
+    public function findAll():array 
+    {
 
         $companies = R::findAll('company');
 
-        return R::exportAll($companies);;
-
-       
+        return R::exportAll($companies);
     }
 
     public function findById($id)
     {
 
-        $company = R::load( 'company', $id );
+        $company = R::load('company', $id);
 
       
         if ( $company->id == 0) {
             throw new CompanyNotFoundException();
         }
 
-
-
         return $company;
     }
 
-    public function create($company){
+    public function create($company)
+    {
 
         $bean = R::dispense('company');
 
         $bean->import($company);
 
         return $id = R::store($bean);
-
     }
     
     public function update($id, $company){
 
-        $bean = R::load( 'company', $id );
+        $bean = R::load('company', $id);
 
         $bean->import($company);
 
         return $id = R::store($bean);
     }
-
 }

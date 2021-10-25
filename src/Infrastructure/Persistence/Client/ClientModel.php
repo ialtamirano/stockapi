@@ -8,6 +8,7 @@ use App\Domain\Client\ClientNotFoundException;
 use App\Domain\Client\ClientRepository;
 
 use PDO;
+use \RedBeanPHP\R as R;
 
 class ClientModel implements ClientRepository
 {
@@ -26,33 +27,12 @@ class ClientModel implements ClientRepository
         $this->connection = $connection;
     }
 
-   /* public function insert(array $client){
-
-        //2. query sql
-        $sql = "INSERT INTO `clientes` (`id`, `codigo`, `nombre`, `rfc`, `celular`) 
-        VALUES (NULL, :codigo, :nombre, :rfc, :celular);";
-
-        //3. Asignar parametro a la consulta
-        $params = [
-            ":codigo" => $client['codigo'],
-            ":nombre" => $client['nombre'],
-            ":rfc" => $client['rfc'],
-            ":celular" => $client['celular']
-        ];
-
-        $this->connection->prepare($sql)->execute($params);
-
   
-        $id = (int) $this->connection->lastInsertId();
 
-        //7. devuelves el valor
-		return $id;
-    }*/
+    public function findAll():array
+    {
 
-    public function findAll():array{
-
-       
-
+    
         //2. query sql
         $sql = "SELECT * FROM clientes ";
         $params = [];
