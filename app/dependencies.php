@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use \RedBeanPHP\R as R;
 
-R::setup( 'mysql:host=localhost;dbname=stockdb', 'root', '');
+
 
 
 
@@ -43,6 +43,10 @@ return function (ContainerBuilder $containerBuilder) {
             $charset = $dbSettings['charset'];
             $flags = $dbSettings['flags'];
             $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+
+            //Instantiate Red Bean
+            R::setup( $dsn, $username, $password);
+
             return new PDO($dsn, $username, $password);
         },
     ]);

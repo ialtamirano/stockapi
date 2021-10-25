@@ -1,16 +1,31 @@
 <?php
 declare(strict_types=1);
 
+
+use App\Application\Actions\Home;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
+
+use App\Application\Actions\Client\ViewClientAction;
+use App\Application\Actions\Client\ListClientAction;
+
+use App\Application\Actions\Company\ViewCompanyAction;
+use App\Application\Actions\Company\ListCompanyAction;
+use App\Application\Actions\Company\CreateCompanyAction;
+use App\Application\Actions\Company\UpdateCompanyAction;
+
+use App\Application\Actions\Part\ViewPartAction;
+use App\Application\Actions\Part\ListPartAction;
+use App\Application\Actions\Part\CreatePartAction;
+use App\Application\Actions\Part\UpdatePartAction;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Views\PhpRenderer;
 
-
-require 'models/ClientModel.php';
+//require 'models/ClientModel.php';
 require 'models/ProductModel.php';
 
 return function (App $app) {
@@ -31,6 +46,8 @@ return function (App $app) {
       
     });
 
+
+
     //Clientes
     $app->group('/clientes', function (Group $group){
 
@@ -50,7 +67,8 @@ return function (App $app) {
     
             return $response;
         });
-    
+
+
         $group->get('/{id}', function (Request $request, Response $response,array $args) {
             
             //1. Obtener variables de la ruta
@@ -283,6 +301,33 @@ return function (App $app) {
 
     });
     
+
+    $app->group('/clients', function (Group $group){
+
+        $group->get('/',ListClientAction::class);
+        $group->get('/{id}',ViewClientAction::class);
+     
+   
+    });
+
+    $app->group('/companies', function (Group $group){
+
+        $group->get('/',ListCompanyAction::class);
+        $group->get('/{id}',ViewCompanyAction::class);
+        $group->post('',CreateCompanyAction::class);
+        $group->put('/{id}',UpdateCompanyAction::class);
+   
+    });
+
+    $app->group('/parts', function (Group $group){
+
+        $group->get('/',ListPartAction::class);
+        $group->get('/{id}',ViewPartAction::class);
+        $group->post('',CreatePartAction::class);
+        $group->put('/{id}',UpdatePartAction::class);
+   
+    });
+
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
