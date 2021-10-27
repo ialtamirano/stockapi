@@ -19,6 +19,12 @@ use App\Application\Actions\Part\ListPartAction;
 use App\Application\Actions\Part\CreatePartAction;
 use App\Application\Actions\Part\UpdatePartAction;
 
+
+use App\Application\Actions\Receipt\ViewReceiptAction;
+use App\Application\Actions\Receipt\ListReceiptAction;
+use App\Application\Actions\Receipt\CreateReceiptAction;
+use App\Application\Actions\Receipt\UpdateReceiptAction;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -324,6 +330,15 @@ return function (App $app) {
         $group->get('/{id}',ViewPartAction::class);
         $group->post('',CreatePartAction::class);
         $group->put('/{id}',UpdatePartAction::class);
+   
+    });
+
+    $app->group('/receipts', function (Group $group){
+
+        $group->get('/',ListReceiptAction::class);
+        $group->get('/{id}',ViewReceiptAction::class);
+        $group->post('',CreateReceiptAction::class);
+        $group->put('/{id}',UpdateReceiptAction::class);
    
     });
 

@@ -27,7 +27,7 @@ class CompanyModel implements CompanyRepository
     }
 
   
-    public function findAll():array 
+    public function findAll():array
     {
 
         $companies = R::findAll('company');
@@ -41,7 +41,8 @@ class CompanyModel implements CompanyRepository
         $company = R::load('company', $id);
 
       
-        if ( $company->id == 0) {
+        if ( $company->id == 0)
+        {
             throw new CompanyNotFoundException();
         }
 
@@ -58,7 +59,8 @@ class CompanyModel implements CompanyRepository
         return $id = R::store($bean);
     }
     
-    public function update($id, $company){
+    public function update($id, $company)
+    {
 
         $bean = R::load('company', $id);
 

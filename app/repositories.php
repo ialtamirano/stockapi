@@ -5,10 +5,13 @@ use App\Domain\User\UserRepository;
 use App\Domain\Client\ClientRepository;
 use App\Domain\Company\CompanyRepository;
 use App\Domain\Part\PartRepository;
+use App\Domain\Receipt\ReceiptRepository;
+
 use App\Infrastructure\Persistence\User\InMemoryUserRepository;
 use App\Infrastructure\Persistence\Client\ClientModel;
 use App\Infrastructure\Persistence\Company\CompanyModel;
 use App\Infrastructure\Persistence\Part\PartModel;
+use App\Infrastructure\Persistence\Receipt\ReceiptModel;
 
 
 use DI\ContainerBuilder;
@@ -29,5 +32,9 @@ return function (ContainerBuilder $containerBuilder) {
 
     $containerBuilder->addDefinitions([
         PartRepository::class => \DI\autowire(PartModel::class),
+    ]);
+
+    $containerBuilder->addDefinitions([
+        ReceiptRepository::class => \DI\autowire(ReceiptModel::class),
     ]);
 };
