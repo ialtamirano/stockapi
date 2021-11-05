@@ -19,6 +19,11 @@ use App\Application\Actions\Part\ListPartAction;
 use App\Application\Actions\Part\CreatePartAction;
 use App\Application\Actions\Part\UpdatePartAction;
 
+use App\Application\Actions\Inbox\ViewInboxAction;
+use App\Application\Actions\Inbox\ListInboxAction;
+use App\Application\Actions\Inbox\CreateInboxAction;
+use App\Application\Actions\Inbox\UpdateInboxAction;
+
 
 use App\Application\Actions\Receipt\ViewReceiptAction;
 use App\Application\Actions\Receipt\ListReceiptAction;
@@ -330,6 +335,15 @@ return function (App $app) {
         $group->get('/{id}',ViewPartAction::class);
         $group->post('',CreatePartAction::class);
         $group->put('/{id}',UpdatePartAction::class);
+   
+    });
+
+    $app->group('/inbox', function (Group $group){
+
+        $group->get('/',ListInboxAction::class);
+        $group->get('/{id}',ViewInboxAction::class);
+        $group->post('',CreateInboxAction::class);
+        $group->put('/{id}',UpdateInboxAction::class);
    
     });
 

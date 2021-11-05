@@ -1,25 +1,38 @@
 <!DOCTYPE html>
-<!-- saved from url=(0069)https://bulmatemplates.github.io/bulma-templates/templates/admin.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+    <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin - Free Bulma template</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="./Admin - Free Bulma template_files/css" rel="stylesheet">
+    <title>Stre</title>
+
+    <link rel="stylesheet" href="assets/css/fontawesome-free-5.15.4-web/css/all.min.css">
     <!-- Bulma Version 0.9.0-->
     <link rel="stylesheet" href="assets/css/bulma/css/bulma.min.css">
-    <link rel="stylesheet" type="text/css" href="./Admin - Free Bulma template_files/admin.css">
-<script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script></head>
+    <link rel="stylesheet" href="assets/css/app.css">
+
+        <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
+    </head>
 
 <body>
 
     <!-- START NAV -->
-    <nav class="navbar is-white">
+    <nav class="navbar is-white ">
         <div class="container">
+            <div class="navbar-item">
+                <div class="control has-icons-left has-icons-right">
+                    <input class="input " type="text" placeholder="">
+                    <span class="icon is-medium is-left">
+                    <i class="fa fa-search"></i>
+                    </span>
+                                    <span class="icon is-medium is-right">
+                    <i class="fa fa-check"></i>
+                    </span>
+                </div>
+            </div>    
             <div class="navbar-brand">
                 <a class="navbar-item brand-text" href="https://bulmatemplates.github.io/bulma-templates/index.html">
-          Bulma Admin
+         Altomigo
         </a>
                 <div class="navbar-burger burger" data-target="navMenu">
                     <span></span>
@@ -27,92 +40,207 @@
                     <span></span>
                 </div>
             </div>
-            <div id="navMenu" class="navbar-menu">
-                <div class="navbar-start">
-                    <a class="navbar-item" href="https://bulmatemplates.github.io/bulma-templates/templates/admin.html">
-            Home
-          </a>
-                    <a class="navbar-item" href="https://bulmatemplates.github.io/bulma-templates/templates/admin.html">
-            Orders
-          </a>
-                    <a class="navbar-item" href="https://bulmatemplates.github.io/bulma-templates/templates/admin.html">
-            Payments
-          </a>
-                    <a class="navbar-item" href="https://bulmatemplates.github.io/bulma-templates/templates/admin.html">
-            Exceptions
-          </a>
-                                 <a class="navbar-item" href="https://bulmatemplates.github.io/bulma-templates/templates/admin.html">
-            Reports
-          </a>
+            <div class="navbar-item bd-navbar-item bd-navbar-item-base has-dropdown is-hoverable">
+                <a class="navbar-link bd-navbar-ellipsis" href="https://bulma.io/more/">
+                  <span class="icon">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </span>
+                </a>
+            
+                <div class="navbar-dropdown bd-navbar-dropdown is-boxed">
+                  
+                    
+                    
+                    <a class="navbar-item" data-route="" href="https://bulma.io/extensions/">
+                        <div>
+                          <div class="icon-text">
+                            <span class="icon has-text-extensions">
+                              <i class="fas fa-plug"></i>
+                            </span>
+                            <span>
+                              <strong>Bulma extensions</strong>
+                            </span>
+                          </div>
+                          Side projects to enhance Bulma
+                        </div>
+                    </a>
+                    
+                      <hr class="navbar-divider ">
+                    
+                  
+                    
+                    
+                    <a class="navbar-item" data-route="" href="https://bulma.io/the-official-bulma-book/">
+                        <div>
+                          <div class="icon-text">
+                            <span class="icon has-text-bleeding">
+                              <i class="fas fa-bookmark"></i>
+                            </span>
+                            <span>
+                              <strong>The official Bulma book</strong>
+                            </span>
+                          </div>
+                          A step-by-step guide that teaches you how to build a web interface from scratch using Bulma
+                        </div>
+                    </a>
+                    
+                      <hr class="navbar-divider ">
+                    
+                  
+                    
+                    
+                    <a class="navbar-item" data-route="" href="https://bulma.io/blog/">
+                        <div>
+                          <div class="icon-text">
+                            <span class="icon has-text-rss">
+                              <i class="fas fa-rss"></i>
+                            </span>
+                            <span>
+                              <strong>Blog</strong>
+                            </span>
+                          </div>
+                          Stay updated with new features
+                        </div>
+                    </a>
+                    
+                      <hr class="navbar-divider ">
+                    
+                  
+                    
+                    
+                    <a class="navbar-item" data-route="" href="https://bulma.io/bulma-start/">
+                        <div>
+                          <div class="icon-text">
+                            <span class="icon has-text-success">
+                              <i class="fas fa-rocket"></i>
+                            </span>
+                            <span>
+                              <strong>Bulma start</strong>
+                            </span>
+                          </div>
+                          A tiny npm package to get started
+                        </div>
+                    </a>
+                    
+                      <hr class="navbar-divider ">
+                    
+                  
+                    
+                    
+                    <a class="navbar-item" data-route="" href="https://bulma.io/made-with-bulma/">
+                        <div>
+                          <div class="icon-text">
+                            <span class="icon has-text-warning">
+                              <i class="fas fa-certificate"></i>
+                            </span>
+                            <span>
+                              <strong>Made with Bulma</strong>
+                            </span>
+                          </div>
+                          The official community badge
+                        </div>
+                    </a>
+                    
+                      <hr class="navbar-divider ">
+                    
+                  
+                    
+                    
+                    <a class="navbar-item" data-route="" href="https://bulma.io/alternative-to-bootstrap/">
+                        <div>
+                          <div class="icon-text">
+                            <span class="icon has-text-bootstrap">
+                              <i class="fas fa-exchange-alt"></i>
+                            </span>
+                            <span>
+                              <strong>Coming from Bootstrap</strong>
+                            </span>
+                          </div>
+                          See how Bulma is an alternative to Bootstrap
+                        </div>
+                    </a>
+                    
+                  
                 </div>
+            </div>
+        </div>
 
             </div>
         </div>
     </nav>
-    <!-- END NAV -->
-    <div class="container">
+
+    <!-- END NAV --><di></di>
+
+
+    <div class="container ">
         <div class="columns">
-            <div class="column is-3 ">
-                <aside class="menu is-hidden-mobile">
-                    <p class="menu-label">
-                        General
-                    </p>
-                    <ul class="menu-list">
-                        <li><a class="is-active">Dashboard</a></li>
-                        <li><a>Customers</a></li>
-                        <li><a>Other</a></li>
-                    </ul>
-                    <p class="menu-label">
-                        Administration
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Team Settings</a></li>
-                        <li>
-                            <a>Manage Your Team</a>
-                            <ul>
-                                <li><a>Members</a></li>
-                                <li><a>Plugins</a></li>
-                                <li><a>Add a member</a></li>
-                                <li><a>Remove a member</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Invitations</a></li>
-                        <li><a>Cloud Storage Environment Settings</a></li>
-                        <li><a>Authentication</a></li>
-                        <li><a>Payments</a></li>
-                    </ul>
-                    <p class="menu-label">
-                        Transactions
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Payments</a></li>
-                        <li><a>Transfers</a></li>
-                        <li><a>Balance</a></li>
-                        <li><a>Reports</a></li>
-                    </ul>
-                </aside>
-            </div>
-            <div class="column is-9">
-                <nav class="breadcrumb" aria-label="breadcrumbs">
-                    <ul>
-                        <li><a href="https://bulmatemplates.github.io/bulma-templates/">Bulma</a></li>
-                        <li><a href="https://bulmatemplates.github.io/bulma-templates/">Templates</a></li>
-                        <li><a href="https://bulmatemplates.github.io/bulma-templates/">Examples</a></li>
-                        <li class="is-active"><a href="https://bulmatemplates.github.io/bulma-templates/templates/admin.html#" aria-current="page">Admin</a></li>
-                    </ul>
-                </nav>
-                <section class="hero is-info welcome is-small">
-                    <div class="hero-body">
-                        <div class="container">
-                            <h1 class="title">
-                                Hello, Admin.
-                            </h1>
-                            <h2 class="subtitle">
-                                I hope you are having a great day!
-                            </h2>
+            <div class="column is-1"></div>
+            <div class="column is-10">
+                <div class="box content">
+                    <article class="post">
+                        <h4>Ola K Ase? Integrando Bulma</h4>
+                        <div class="media">
+                            <div class="media-left">
+                                <p class="image is-32x32">
+                                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                                </p>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <a href="#">@jsmith</a> replied 34 minutes ago &nbsp;
+                                        <span class="tag">Pregunta</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <span class="has-text-grey-light"><i class="fa fa-comments"></i> 1</span>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </article>
+                    <article class="post">
+                        <h4>Bulma: How do you center a button in a box?</h4>
+                        <div class="media">
+                            <div class="media-left">
+                                <p class="image is-32x32">
+                                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                                </p>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <a href="#">@jsmith</a> replied 34 minutes ago &nbsp;
+                                        <span class="tag">Inventory</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <span class="has-text-grey-light"><i class="fa fa-comments"></i> 1</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="post">
+                        <h4>Maria le ha enviado  una orden de compra   </h4>
+                        <div class="media">
+                            <div class="media-left">
+                                <p class="image is-32x32">
+                                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                                </p>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <a href="#">@jsmith</a> replied 34 minutes ago &nbsp;
+                                        <span class="tag">Sale</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <span class="has-text-grey-light"><i class="fa fa-comments"></i> 1</span>
+                            </div>
+                        </div>
+                    </article>
+                
                 <section class="info-tiles">
                     <div class="tile is-ancestor has-text-centered">
                         <div class="tile is-parent">
@@ -266,11 +394,18 @@
                     </div>
                 </div>
             </div>
+            </div>
+            <div class="column is-1"></div>
         </div>
     </div>
     <script async="" type="text/javascript" src="./Admin - Free Bulma template_files/bulma.js.download"></script>
     <script     src="https://code.jquery.com/jquery-3.6.0.min.js"    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="     crossorigin="anonymous"></script>
     <script async="" type="text/javascript" src="assets/js/app.js"></script>
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
 
 
 

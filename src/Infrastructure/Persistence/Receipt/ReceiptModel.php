@@ -68,9 +68,7 @@ class ReceiptModel implements ReceiptRepository
             $receiptBean->receipt_date =$receipt->receipt_date;
             $receiptBean->locationId = $receipt->locationId;
             $receiptBean->orderTypeId = $receipt->orderTypeId;
-
-
-            
+                     
             foreach ($receipt->ownReceiptitem as $item) {
 
                 $receiptItemBean = R::dispense('receiptitem');

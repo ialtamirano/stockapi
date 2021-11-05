@@ -5,12 +5,14 @@ use App\Domain\User\UserRepository;
 use App\Domain\Client\ClientRepository;
 use App\Domain\Company\CompanyRepository;
 use App\Domain\Part\PartRepository;
+use App\Domain\Inbox\InboxRepository;
 use App\Domain\Receipt\ReceiptRepository;
 
 use App\Infrastructure\Persistence\User\InMemoryUserRepository;
 use App\Infrastructure\Persistence\Client\ClientModel;
 use App\Infrastructure\Persistence\Company\CompanyModel;
 use App\Infrastructure\Persistence\Part\PartModel;
+use App\Infrastructure\Persistence\Inbox\InboxModel;
 use App\Infrastructure\Persistence\Receipt\ReceiptModel;
 
 
@@ -35,6 +37,11 @@ return function (ContainerBuilder $containerBuilder) {
     ]);
 
     $containerBuilder->addDefinitions([
+        InboxRepository::class => \DI\autowire(InboxModel::class),
+    ]);
+
+    $containerBuilder->addDefinitions([
         ReceiptRepository::class => \DI\autowire(ReceiptModel::class),
     ]);
 };
+
