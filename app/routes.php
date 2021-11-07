@@ -43,6 +43,13 @@ use App\Application\Actions\Stream\CreateStreamAction;
 use App\Application\Actions\Stream\UpdateStreamAction;
 use App\Application\Actions\Stream\DeleteStreamAction;
 
+
+use App\Application\Actions\Supplier\ViewSupplierAction;
+use App\Application\Actions\Supplier\ListSupplierAction;
+use App\Application\Actions\Supplier\CreateSupplierAction;
+use App\Application\Actions\Supplier\UpdateSupplierAction;
+use App\Application\Actions\Supplier\DeleteSupplierAction;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -386,6 +393,15 @@ return function (App $app) {
         $group->post('/',CreateStreamAction::class);
         $group->put('/{id}',UpdateStreamAction::class);
         $group->delete('/{id}',DeleteStreamAction::class);
+   
+    });
+    $app->group('/suppliers', function (Group $group){
+
+        $group->get('/',ListSupplierAction::class);
+        $group->get('/{id}',ViewSupplierAction::class);
+        $group->post('/',CreateSupplierAction::class);
+        $group->put('/{id}',UpdateSupplierAction::class);
+        $group->delete('/{id}',DeleteSupplierAction::class);
    
     });
 
