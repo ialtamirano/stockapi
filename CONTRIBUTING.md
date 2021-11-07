@@ -6,8 +6,12 @@ https://deviq.com/design-patterns/repository-pattern
 -Crear una Interface en el folder 'src/Domain/'
 -Crear un Modelo en la carpeta 'src/Infrastructure/Persistence'
 -Crear las Actions en la carpeta 'src/Application/Actions'
--mapear un repositorio a un modelo en el archivo 'app.repositories.php'
+-Mapear un repositorio a un modelo en el archivo 'app.repositories.php'
 -Crear las rutas en el archivo 'app.routes.php'
+
+
+
+
 1. Crear una class 'EntidadAction' 
 
 1. Crear el 
