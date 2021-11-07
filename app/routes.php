@@ -30,6 +30,19 @@ use App\Application\Actions\Receipt\ListReceiptAction;
 use App\Application\Actions\Receipt\CreateReceiptAction;
 use App\Application\Actions\Receipt\UpdateReceiptAction;
 
+
+use App\Application\Actions\Location\ViewLocationAction;
+use App\Application\Actions\Location\ListLocationAction;
+use App\Application\Actions\Location\CreateLocationAction;
+use App\Application\Actions\Location\UpdateLocationAction;
+use App\Application\Actions\Location\DeleteLocationAction;
+
+use App\Application\Actions\Stream\ViewStreamAction;
+use App\Application\Actions\Stream\ListStreamAction;
+use App\Application\Actions\Stream\CreateStreamAction;
+use App\Application\Actions\Stream\UpdateStreamAction;
+use App\Application\Actions\Stream\DeleteStreamAction;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -37,7 +50,7 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Views\PhpRenderer;
 
 //require 'models/ClientModel.php';
-require 'models/ProductModel.php';
+//require 'models/ProductModel.php';
 
 return function (App $app) {
 
@@ -353,6 +366,26 @@ return function (App $app) {
         $group->get('/{id}',ViewReceiptAction::class);
         $group->post('',CreateReceiptAction::class);
         $group->put('/{id}',UpdateReceiptAction::class);
+   
+    });
+
+    $app->group('/locations', function (Group $group){
+
+        $group->get('/',ListLocationAction::class);
+        $group->get('/{id}',ViewLocationAction::class);
+        $group->post('/',CreateLocationAction::class);
+        $group->put('/{id}',UpdateLocationAction::class);
+        $group->delete('/{id}',DeleteLocationAction::class);
+   
+    });
+
+    $app->group('/streams', function (Group $group){
+
+        $group->get('/',ListStreamAction::class);
+        $group->get('/{id}',ViewStreamAction::class);
+        $group->post('/',CreateStreamAction::class);
+        $group->put('/{id}',UpdateStreamAction::class);
+        $group->delete('/{id}',DeleteStreamAction::class);
    
     });
 

@@ -3,7 +3,7 @@ El patron de desarrollo que usaremos para esta API se conoce como Repository Pat
 https://deviq.com/design-patterns/repository-pattern
 
 # REST API CREATION
--Crear una Interface en el folder 'src/Domain/'
+-Crear una Interface/Repositorio en el folder 'src/Domain/'
 -Crear un Modelo en la carpeta 'src/Infrastructure/Persistence'
 -Crear las Actions en la carpeta 'src/Application/Actions'
 -Mapear un repositorio a un modelo en el archivo 'app.repositories.php'

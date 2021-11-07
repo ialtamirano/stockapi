@@ -7,6 +7,8 @@ use App\Domain\Company\CompanyRepository;
 use App\Domain\Part\PartRepository;
 use App\Domain\Inbox\InboxRepository;
 use App\Domain\Receipt\ReceiptRepository;
+use App\Domain\Location\LocationRepository;
+use App\Domain\Stream\StreamRepository;
 
 use App\Infrastructure\Persistence\User\InMemoryUserRepository;
 use App\Infrastructure\Persistence\Client\ClientModel;
@@ -14,6 +16,8 @@ use App\Infrastructure\Persistence\Company\CompanyModel;
 use App\Infrastructure\Persistence\Part\PartModel;
 use App\Infrastructure\Persistence\Inbox\InboxModel;
 use App\Infrastructure\Persistence\Receipt\ReceiptModel;
+use App\Infrastructure\Persistence\Location\LocationModel;
+use App\Infrastructure\Persistence\Stream\StreamModel;
 
 
 use DI\ContainerBuilder;
@@ -42,6 +46,14 @@ return function (ContainerBuilder $containerBuilder) {
 
     $containerBuilder->addDefinitions([
         ReceiptRepository::class => \DI\autowire(ReceiptModel::class),
+    ]);
+
+    $containerBuilder->addDefinitions([
+        LocationRepository::class => \DI\autowire(LocationModel::class),
+    ]);
+
+    $containerBuilder->addDefinitions([
+        StreamRepository::class => \DI\autowire(StreamModel::class),
     ]);
 };
 
