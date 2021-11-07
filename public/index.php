@@ -49,6 +49,8 @@ $app->addBodyParsingMiddleware();
 $middleware = require __DIR__ . '/../app/middleware.php';
 $middleware($app);
 
+$app->addRoutingMiddleware();
+
 // Register routes
 $routes = require __DIR__ . '/../app/routes.php';
 $routes($app);

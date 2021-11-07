@@ -49,15 +49,20 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Views\PhpRenderer;
 
-//require 'models/ClientModel.php';
-//require 'models/ProductModel.php';
 
 return function (App $app) {
 
-    $app->options('/{routes:.*}', function (Request $request, Response $response) {
+    $app->options('/{routes:.+}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
-        return $response;
+          return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Credentials', true)
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS')
+        ->withHeader('Content-Type', 'application/json');
     });
+
+    
 
     $app->get('/', function (Request $request, Response $response, array $args) {
 
