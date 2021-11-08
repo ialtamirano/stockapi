@@ -50,6 +50,13 @@ use App\Application\Actions\Supplier\CreateSupplierAction;
 use App\Application\Actions\Supplier\UpdateSupplierAction;
 use App\Application\Actions\Supplier\DeleteSupplierAction;
 
+
+use App\Application\Actions\Warehouse\ViewWarehouseAction;
+use App\Application\Actions\Warehouse\ListWarehouseAction;
+use App\Application\Actions\Warehouse\CreateWarehouseAction;
+use App\Application\Actions\Warehouse\UpdateWarehouseAction;
+use App\Application\Actions\Warehouse\DeleteWarehouseAction;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -402,6 +409,15 @@ return function (App $app) {
         $group->post('/',CreateSupplierAction::class);
         $group->put('/{id}',UpdateSupplierAction::class);
         $group->delete('/{id}',DeleteSupplierAction::class);
+   
+    });
+    $app->group('/warehouses', function (Group $group){
+
+        $group->get('/',ListWarehouseAction::class);
+        $group->get('/{id}',ViewWarehouseAction::class);
+        $group->post('/',CreateWarehouseAction::class);
+        $group->put('/{id}',UpdateWarehouseAction::class);
+        $group->delete('/{id}',DeleteWarehouseAction::class);
    
     });
 
