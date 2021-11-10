@@ -56,9 +56,7 @@ class ReceiptModel implements ReceiptRepository
 
         try{
             
-            //var_dump($receipt);
-            //exit;
-
+            
 
             $receiptBean = R::dispense('receipt');
 

@@ -14,6 +14,7 @@ class CreateLocationAction extends LocationAction
     {
 
         $location = $this->getFormData();
+        
        
         $location->id = $this->locationRepository->create($location);
 

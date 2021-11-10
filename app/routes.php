@@ -50,26 +50,26 @@ use App\Application\Actions\Supplier\CreateSupplierAction;
 use App\Application\Actions\Supplier\UpdateSupplierAction;
 use App\Application\Actions\Supplier\DeleteSupplierAction;
 
+//use App\Application\Action\PreflightAction;
+
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Views\PhpRenderer;
 
+use Slim\Exception\HttpNotFoundException;
+
 
 return function (App $app) {
 
+   
+
     $app->options('/{routes:.+}', function (Request $request, Response $response) {
-        // CORS Pre-Flight OPTIONS Request Handler
-          return $response
-        ->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Credentials', true)
-        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS')
-        ->withHeader('Content-Type', 'application/json');
+        return $response->withHeader('Access-Control-Allow-Origin', '*');
     });
 
-    
 
     $app->get('/', function (Request $request, Response $response, array $args) {
 
@@ -386,10 +386,16 @@ return function (App $app) {
         $group->get('/',ListLocationAction::class);
         $group->get('/{id}',ViewLocationAction::class);
         $group->post('/',CreateLocationAction::class);
+        
         $group->put('/{id}',UpdateLocationAction::class);
         $group->delete('/{id}',DeleteLocationAction::class);
    
     });
+
+    /*$app->options('/locations', function (Request $request, Response $response): Response {
+        return $response;
+    });*/
+
 
     $app->group('/streams', function (Group $group){
 
@@ -414,4 +420,11 @@ return function (App $app) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
     });
+
+
+    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+        throw new HttpNotFoundException($request);
+    });
+    
+   
 };
