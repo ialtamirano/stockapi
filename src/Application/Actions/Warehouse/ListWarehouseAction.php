@@ -12,10 +12,10 @@ class ListWarehouseAction extends WarehouseAction
      */
     protected function action(): Response
     {
-        $Warehouse = $this->WarehouseRepository->findAll();
+        $warehouse = $this->warehouseRepository->findAll();
 
         $this->logger->info("Warehouse list was viewed.");
 
-        return $this->respondWithData($Warehouse);
+        return $this->respondWithData($warehouse);
     }
 }
