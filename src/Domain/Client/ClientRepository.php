@@ -18,5 +18,11 @@ interface ClientRepository
      * @return Client
      * @throws ClientNotFoundException
      */
-    public function findClientOfId(int $id);
+    public function findById(int $id);
+
+    public function create(array $Client);
+
+    public function update(int $id, array $Client);
+
+    public function delete(int $id);
 }

@@ -1,28 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Domain\User;
+namespace App\Domain\Scope;
 
-interface UserRepository
+interface ScopeRepository
 {
     
-    /*public function insert(array $user): int;
+    /*public function insert(array $Scope): int;
 */
      /**
-     * @return User[]
+     * @return Scope[]
      */
     public function findAll(): array;
 
     /**
      * @param int $id
-     * @return User
+     * @return Scope
      * @throws StreamNotFoundException
      */
     public function findById(int $id);
 
-    public function create(array $user);
+    public function create(array $Scope);
 
-    public function update(int $id, array $user);
+    public function update(int $id, array $Scope);
 
     public function delete(int $id);
 }

@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions\User;
+namespace App\Application\Actions\User; 
+//purebaaa
 
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -13,9 +14,9 @@ class ViewUserAction extends UserAction
     protected function action(): Response
     {
         $userId = (int) $this->resolveArg('id');
-        $user = $this->userRepository->findUserOfId($userId);
+        $user = $this->userRepository->findById($userId);
 
-        $this->logger->info("User of id `${userId}` was viewed.");
+        $this->logger->info("user of id `${userId}` was viewed.");
 
         return $this->respondWithData($user);
     }
