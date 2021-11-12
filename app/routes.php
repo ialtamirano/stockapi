@@ -82,15 +82,17 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Views\PhpRenderer;
 
-//require 'models/ClientModel.php';
-//require 'models/ProductModel.php';
+use Slim\Exception\HttpNotFoundException;
+
 
 return function (App $app) {
 
-    $app->options('/{routes:.*}', function (Request $request, Response $response) {
-        // CORS Pre-Flight OPTIONS Request Handler
+   
+
+    $app->options('/{routes:.+}', function (Request $request, Response $response) {
         return $response;
     });
+
 
     $app->get('/', function (Request $request, Response $response, array $args) {
 
@@ -411,10 +413,16 @@ return function (App $app) {
         $group->get('/',ListLocationAction::class);
         $group->get('/{id}',ViewLocationAction::class);
         $group->post('/',CreateLocationAction::class);
+        
         $group->put('/{id}',UpdateLocationAction::class);
         $group->delete('/{id}',DeleteLocationAction::class);
    
     });
+
+    /*$app->options('/locations', function (Request $request, Response $response): Response {
+        return $response;
+    });*/
+
 
     $app->group('/streams', function (Group $group){
 
@@ -470,4 +478,11 @@ return function (App $app) {
         $group->put('/{id}',UpdateUserAction::class);
         $group->delete('/{id}',DeleteUserAction::class);
     });
+
+
+    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+        throw new HttpNotFoundException($request);
+    });
+    
+   
 };

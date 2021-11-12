@@ -42,7 +42,7 @@ class AccountModel implements AccountRepository
       
         if ( $account->id == 0)
         {
-            throw new AccountNotFoundExceptionAccount();
+            throw new AccountNotFoundException();
         }
         return $account;
     }

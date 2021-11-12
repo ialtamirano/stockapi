@@ -42,7 +42,7 @@ class WarehouseModel implements WarehouseRepository
       
         if ( $warehouse->id == 0)
         {
-            throw new WarehouseNotFoundExceptionWarehouse();
+            throw new WarehouseNotFoundException();
         }
         return $warehouse;
     }

@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+
+
 use App\Application\Handlers\HttpErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
@@ -49,9 +51,14 @@ $app->addBodyParsingMiddleware();
 $middleware = require __DIR__ . '/../app/middleware.php';
 $middleware($app);
 
+
+
+
 // Register routes
 $routes = require __DIR__ . '/../app/routes.php';
 $routes($app);
+
+
 
 /** @var SettingsInterface $settings */
 $settings = $container->get(SettingsInterface::class);
@@ -75,6 +82,8 @@ register_shutdown_function($shutdownHandler);
 // Add Routing Middleware
 $app->addRoutingMiddleware();
 
+
+
 // Add Error Middleware
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
@@ -83,3 +92,5 @@ $errorMiddleware->setDefaultErrorHandler($errorHandler);
 $response = $app->handle($request);
 $responseEmitter = new ResponseEmitter();
 $responseEmitter->emit($response);
+
+
