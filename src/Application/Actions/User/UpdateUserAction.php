@@ -1,22 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions\User; 
-//purebaaa
+namespace App\Application\Actions\User;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ViewUserAction extends UserAction
+class UpdateUserAction extends UserAction
 {
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $userId = (int) $this->resolveArg('id');
-        $user = $this->userRepository->findById($userId);
 
-        $this->logger->info("user of id `${userId}` was viewed.");
+        $userId = (int) $this->resolveArg('id');
+        $user = $this->getFormData();
+       
+        $user->id = $this->userRepository->update($userId,$user);
+
+        $this->logger->info("user of id `$user->id` was updated.");
 
         return $this->respondWithData($user);
     }

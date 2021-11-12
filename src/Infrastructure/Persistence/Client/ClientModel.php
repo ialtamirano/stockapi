@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Client;
 
-
 use App\Domain\Client\ClientNotFoundException;
 use App\Domain\Client\ClientRepository;
 
@@ -27,56 +26,60 @@ class ClientModel implements ClientRepository
         $this->connection = $connection;
     }
 
-  
 
     public function findAll():array
     {
+        $client = R::findAll('client');
 
-    
-        //2. query sql
-        $sql = "SELECT * FROM clientes ";
-        $params = [];
-
-       //3. preparas el query
-		$statement = $this->connection->prepare($sql);
-		$statement->setFetchMode(PDO::FETCH_OBJ);
-
-        //4. Ejectutas
-		 $statement->execute($params);
-
-        //5. Lees el resultado
-        $clientes = $statement->fetchAll(PDO::FETCH_OBJ);
-
-        //6. devuelves el valor
-		return $clientes;
+        return R::exportAll($client);
     }
 
-    public function findClientOfId($id)
+    public function findById($id)
     {
 
-        //2. query sql
-        $sql = "SELECT * FROM clientes WHERE id = :id ";
+        $client = R::load('client', $id);
 
-        //3. Asignar parametro a la consulta
-        $params = [];
-        $params[":id"] = $id;
+      
+        if ( $client->id == 0)
+        {
+            throw new ClientNotFoundExceptionClient();
+        }
+        return $client;
+    }
 
-       //4. preparas el query
-		$statement = $this->connection->prepare($sql);
-		$statement->setFetchMode(PDO::FETCH_OBJ);
+    public function create($client) {
 
-        //5. Ejectutas
-		 $statement->execute($params);
+        $bean = R::dispense('client');
 
-        //6. Lees el resultado
-        $client = $statement->fetch(PDO::FETCH_OBJ);
+        $bean->import($client);
 
-        if (!isset( $client->id)) {
-            throw new ClientNotFoundException();
+        return $id = R::store($bean);
+    }
+    
+    public function update($id, $client)
+    {
+
+        $bean = R::load('client', $id);
+
+        $bean->import($client);
+
+        return $id = R::store($bean);
+    }
+
+    public function delete($id)
+    {
+
+        $client = R::load('client', $id);
+
+        if ( $client->id == 0)
+        {
+            throw new ClientNotFoundExceptionClient();
         }
 
-        //7. devuelves el valor
-		return $client;
+        R::trash( $client);       
+        return true;
     }
+
+
 
 }

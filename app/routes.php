@@ -3,11 +3,17 @@ declare(strict_types=1);
 
 
 
-use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
+use App\Application\Actions\User\ListUsertAction;
+use App\Application\Actions\User\CreateUserAction;
+use App\Application\Actions\User\UpdateUserAction;
+use App\Application\Actions\User\DeleteUserAction;
 
-use App\Application\Actions\Client\ViewClientAction;
+use App\Application\Actions\Clientt\ViewClientAction;
 use App\Application\Actions\Client\ListClientAction;
+use App\Application\Actions\Client\CreateClientAction;
+use App\Application\Actions\Client\UpdateClientAction;
+use App\Application\Actions\Client\DeleteClientAction;
 
 use App\Application\Actions\Company\ViewCompanyAction;
 use App\Application\Actions\Company\ListCompanyAction;
@@ -62,6 +68,13 @@ use App\Application\Actions\Account\ListAccountAction;
 use App\Application\Actions\Account\CreateAccountAction;
 use App\Application\Actions\Account\UpdateAccountAction;
 use App\Application\Actions\Account\DeleteAccountAction;
+
+
+use App\Application\Actions\Scope\ViewScopeAction;
+use App\Application\Actions\Scope\ListScopeAction;
+use App\Application\Actions\Scope\CreateScopeAction;
+use App\Application\Actions\Scope\UpdateScopeAction;
+use App\Application\Actions\Scope\DeleteScopeAction;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -349,9 +362,13 @@ return function (App $app) {
 
         $group->get('/',ListClientAction::class);
         $group->get('/{id}',ViewClientAction::class);
+        $group->post('/',CreateClientAction::class);
+        $group->put('/{id}',UpdateClientAction::class);
+        $group->delete('/{id}',DeleteClientAction::class);
+    });
      
    
-    });
+    
 
     $app->group('/companies', function (Group $group){
 
@@ -436,8 +453,21 @@ return function (App $app) {
    
     });
 
-    $app->group('/users', function (Group $group) {
-        $group->get('', ListUsersAction::class);
-        $group->get('/{id}', ViewUserAction::class);
+    $app->group('/scopes', function (Group $group){
+
+        $group->get('/',ListScopeAction::class);
+        $group->get('/{id}',ViewScopeAction::class);
+        $group->post('/',CreateScopeAction::class);
+        $group->put('/{id}',UpdateScopeAction::class);
+        $group->delete('/{id}',DeleteScopeAction::class);
+    });
+
+    $app->group('/users', function (Group $group){
+
+        $group->get('/',ListUserAction::class);
+        $group->get('/{id}',ViewUserAction::class);
+        $group->post('/',CreateUserAction::class);
+        $group->put('/{id}',UpdateUserAction::class);
+        $group->delete('/{id}',DeleteUserAction::class);
     });
 };

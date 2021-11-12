@@ -12,8 +12,9 @@ use App\Domain\Stream\StreamRepository;
 use App\Domain\Supplier\SupplierRepository;
 use App\Domain\Warehouse\WarehouseRepository;
 use App\Domain\Account\AccountRepository;
+use App\Domain\Scope\ScopeRepository;
 
-use App\Infrastructure\Persistence\User\InMemoryUserRepository;
+use App\Infrastructure\Persistence\User\UserModel;
 use App\Infrastructure\Persistence\Client\ClientModel;
 use App\Infrastructure\Persistence\Company\CompanyModel;
 use App\Infrastructure\Persistence\Part\PartModel;
@@ -24,6 +25,7 @@ use App\Infrastructure\Persistence\Stream\StreamModel;
 use App\Infrastructure\Persistence\Supplier\SupplierModel;
 use App\Infrastructure\Persistence\Warehouse\WarehouseModel;
 use App\Infrastructure\Persistence\Account\AccountModel;
+use App\Infrastructure\Persistence\Scope\ScopeModel;
 
 
 use DI\ContainerBuilder;
@@ -31,7 +33,7 @@ use DI\ContainerBuilder;
 return function (ContainerBuilder $containerBuilder) {
     // Here we map our UserRepository interface to its in memory implementation
     $containerBuilder->addDefinitions([
-        UserRepository::class => \DI\autowire(InMemoryUserRepository::class),
+        UserRepository::class => \DI\autowire(UserModel::class),
     ]);
 
     $containerBuilder->addDefinitions([
@@ -69,6 +71,9 @@ return function (ContainerBuilder $containerBuilder) {
     ]);
     $containerBuilder->addDefinitions([
         AccountRepository::class => \DI\autowire(AccountModel::class),
+    ]);
+    $containerBuilder->addDefinitions([
+        ScopeRepository::class => \DI\autowire(Model::class),
     ]);
 };
 
