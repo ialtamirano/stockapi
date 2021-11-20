@@ -22,6 +22,7 @@ use App\Application\Actions\Company\UpdateCompanyAction;
 
 use App\Application\Actions\Part\ViewPartAction;
 use App\Application\Actions\Part\ListPartAction;
+use App\Application\Actions\Part\SearchPartAction;
 use App\Application\Actions\Part\CreatePartAction;
 use App\Application\Actions\Part\UpdatePartAction;
 
@@ -75,6 +76,18 @@ use App\Application\Actions\Scope\ListScopeAction;
 use App\Application\Actions\Scope\CreateScopeAction;
 use App\Application\Actions\Scope\UpdateScopeAction;
 use App\Application\Actions\Scope\DeleteScopeAction;
+
+
+use App\Application\Actions\Customer\ViewCustomerAction;
+use App\Application\Actions\Customer\ListCustomerAction;
+use App\Application\Actions\Customer\CreateCustomerAction;
+use App\Application\Actions\Customer\UpdateCustomerAction;
+
+use App\Application\Actions\Category\ViewCategoryAction;
+use App\Application\Actions\Category\ListCategoryAction;
+use App\Application\Actions\Category\CreateCategoryAction;
+use App\Application\Actions\Category\UpdateCategoryAction;
+
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -358,7 +371,6 @@ return function (App $app) {
 
 
     });
-    
 
     $app->group('/clients', function (Group $group){
 
@@ -369,9 +381,6 @@ return function (App $app) {
         $group->delete('/{id}',DeleteClientAction::class);
     });
      
-   
-    
-
     $app->group('/companies', function (Group $group){
 
         $group->get('/',ListCompanyAction::class);
@@ -384,6 +393,7 @@ return function (App $app) {
     $app->group('/parts', function (Group $group){
 
         $group->get('/',ListPartAction::class);
+        $group->get('/search/{query}',SearchPartAction::class);
         $group->get('/{id}',ViewPartAction::class);
         $group->post('',CreatePartAction::class);
         $group->put('/{id}',UpdatePartAction::class);
@@ -412,8 +422,7 @@ return function (App $app) {
 
         $group->get('/',ListLocationAction::class);
         $group->get('/{id}',ViewLocationAction::class);
-        $group->post('/',CreateLocationAction::class);
-        
+        $group->post('/',CreateLocationAction::class);    
         $group->put('/{id}',UpdateLocationAction::class);
         $group->delete('/{id}',DeleteLocationAction::class);
    
@@ -470,13 +479,33 @@ return function (App $app) {
         $group->delete('/{id}',DeleteScopeAction::class);
     });
 
+
+    $app->group('/customers', function (Group $group){
+
+        $group->get('/',ListCustomerAction::class);
+        $group->get('/{id}',ViewCustomerAction::class);
+        $group->post('/',CreateCustomerAction::class);
+        $group->put('/{id}',UpdateCustomerAction::class);
+   
+    });
+
+    $app->group('/categories', function (Group $group){
+
+        $group->get('/',ListCategoryAction::class);
+        $group->get('/{id}',ViewCategoryAction::class);
+        $group->post('/',CreateCategoryAction::class);
+        $group->put('/{id}',UpdateCategoryAction::class);
+   
+    });
+
+
     $app->group('/users', function (Group $group){
 
-        $group->get('/',ListUserAction::class);
-        $group->get('/{id}',ViewUserAction::class);
-        $group->post('/',CreateUserAction::class);
-        $group->put('/{id}',UpdateUserAction::class);
-        $group->delete('/{id}',DeleteUserAction::class);
+        $group->get('/',\App\Application\Actions\Customer\ListUserAction::class);
+        $group->get('/{id}',\App\Application\Actions\Customer\ViewUserAction::class);
+        $group->post('/',\App\Application\Actions\Customer\CreateUserAction::class);
+        $group->put('/{id}',\App\Application\Actions\Customer\UpdateUserAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Customer\DeleteUserAction::class);
     });
 
 

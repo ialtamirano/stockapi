@@ -76,7 +76,8 @@ class TestCase extends PHPUnit_TestCase
         array $serverParams = []
     ): Request {
         $uri = new Uri('', '', 80, $path);
-        $handle = fopen('php://temp', 'w+');
+        //$handle = fopen('php://temp', 'w+');
+        $handle = fopen('php://input', 'w+');
         $stream = (new StreamFactory())->createStreamFromResource($handle);
 
         $h = new Headers();
@@ -87,30 +88,7 @@ class TestCase extends PHPUnit_TestCase
         return new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream);
     }
 
-    /**
-     * @param string $method
-     * @param string $path
-     * @param array  $headers
-     * @param array  $cookies
-     * @param array  $serverParams
-     * @return Request
-     */
-    protected function createJsonRequest(
-        string $method,
-        string $path,
-        array $headers = ['HTTP_ACCEPT' => 'application/json'],
-        array $cookies = [],
-        array $serverParams = []
-    ): Request {
-        $uri = new Uri('', '', 80, $path);
-        $handle = fopen('php://temp', 'w+');
-        $stream = (new StreamFactory())->createStreamFromResource($handle);
 
-        $h = new Headers();
-        foreach ($headers as $name => $value) {
-            $h->addHeader($name, $value);
-        }
 
-        return new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream);
-    }
+    
 }

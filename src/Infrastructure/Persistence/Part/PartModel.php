@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Part;
 
+use App\Domain\DomainException;
 use App\Domain\Part\PartNotFoundException;
 use App\Domain\Part\PartRepository;
+use App\Domain\DomainException\DomainSearchResultNotFoundException;
 
 use PDO;
 use \RedBeanPHP\R as R;
@@ -33,6 +35,25 @@ class PartModel implements PartRepository
 
         return R::exportAll($parts);
     }
+
+    public function search($query):array
+    {
+        
+        $parts = R::find('part', 'name LIKE ? OR description LIKE ? OR tags LIKE ?', [
+            '%' . $query . '%',
+            '%' . $query . '%',
+            '%' . $query . '%'
+        ]);
+
+        if ( count($parts) == 0)
+        {
+            throw new DomainSearchResultNotFoundException();
+        }
+
+        return R::exportAll($parts);
+    }
+
+   
 
     public function findById($id)
     {

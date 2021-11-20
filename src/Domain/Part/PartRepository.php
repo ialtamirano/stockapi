@@ -23,4 +23,6 @@ interface PartRepository
     public function create(array $part);
 
     public function update(int $id, array $part);
+
+    public function search($query): array;
 }

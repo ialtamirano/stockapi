@@ -22,7 +22,12 @@ class CreateLocationActionTest extends TestCase
         $container = $app->getContainer();
 
         
-        $location = [  'code' => 'Prueba Nuevo', 'name' => 'Prueba Nuevo' , "warehouse_id"=> "1", "deleted" =>"0"];
+        $location = [  
+            'code' => 'Prueba Nuevo', 
+            'name' => 'Prueba Nuevo' , 
+            'warehouse_id'=> '1',
+             'deleted' =>'0'
+        ];
 
         $id = null;
         $newLocation = null;
@@ -35,8 +40,12 @@ class CreateLocationActionTest extends TestCase
 
         $container->set(LocationRepository::class, $locationRepositoryProphecy->reveal());
 
-        $request = $this->createRequest('POST', '/locations/',$location);
-        $request-> withParsedBody( $location);
+        
+        $request = $this->createRequest('POST', '/locations/');
+        //$object = json_decode(json_encode($location));
+        $request = $request->withParsedBody($location);
+        //var_dump($object);
+        //exit;
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
