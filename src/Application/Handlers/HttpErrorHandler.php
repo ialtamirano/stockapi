@@ -16,6 +16,7 @@ use Slim\Exception\HttpNotImplementedException;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
+use RuntimeException;
 
 class HttpErrorHandler extends SlimErrorHandler
 {
@@ -26,11 +27,17 @@ class HttpErrorHandler extends SlimErrorHandler
     {
         $exception = $this->exception;
         $statusCode = 500;
+
         $error = new ActionError(
             ActionError::SERVER_ERROR,
             'An internal error has occurred while processing your request.'
         );
 
+        if ($exception instanceof RuntimeException) {
+            $statusCode = $exception->getCode();
+            $error->setDescription($exception->getMessage());
+        }
+        
         if ($exception instanceof HttpException) {
             $statusCode = $exception->getCode();
             $error->setDescription($exception->getMessage());

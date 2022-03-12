@@ -13,7 +13,6 @@ use \RedBeanPHP\R as R;
 
 
 
-
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         LoggerInterface::class => function (ContainerInterface $c) {
@@ -44,10 +43,11 @@ return function (ContainerBuilder $containerBuilder) {
             $flags = $dbSettings['flags'];
             $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
 
-            //Instantiate Red Bean
+            //Instantiate Red Bean ORM
             R::setup( $dsn, $username, $password);
 
             return new PDO($dsn, $username, $password);
-        },
+        }
+        
     ]);
 };

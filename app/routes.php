@@ -20,17 +20,6 @@ use App\Application\Actions\Company\ListCompanyAction;
 use App\Application\Actions\Company\CreateCompanyAction;
 use App\Application\Actions\Company\UpdateCompanyAction;
 
-use App\Application\Actions\Part\ViewPartAction;
-use App\Application\Actions\Part\ListPartAction;
-use App\Application\Actions\Part\SearchPartAction;
-use App\Application\Actions\Part\CreatePartAction;
-use App\Application\Actions\Part\UpdatePartAction;
-
-use App\Application\Actions\Inbox\ViewInboxAction;
-use App\Application\Actions\Inbox\ListInboxAction;
-use App\Application\Actions\Inbox\CreateInboxAction;
-use App\Application\Actions\Inbox\UpdateInboxAction;
-
 
 use App\Application\Actions\Receipt\ViewReceiptAction;
 use App\Application\Actions\Receipt\ListReceiptAction;
@@ -67,6 +56,7 @@ use App\Application\Actions\Warehouse\DeleteWarehouseAction;
 use App\Application\Actions\Account\ViewAccountAction;
 use App\Application\Actions\Account\ListAccountAction;
 use App\Application\Actions\Account\CreateAccountAction;
+
 use App\Application\Actions\Account\UpdateAccountAction;
 use App\Application\Actions\Account\DeleteAccountAction;
 
@@ -88,6 +78,11 @@ use App\Application\Actions\Category\ListCategoryAction;
 use App\Application\Actions\Category\CreateCategoryAction;
 use App\Application\Actions\Category\UpdateCategoryAction;
 
+use App\Application\Actions\Basket\ViewBasketAction;
+use App\Application\Actions\Basket\ListBasketAction;
+use App\Application\Actions\Basket\CreateBasketAction;
+use App\Application\Actions\Basket\UpdateBasketAction;
+
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -96,9 +91,12 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Views\PhpRenderer;
 
 use Slim\Exception\HttpNotFoundException;
+use Ramsey\Uuid\Uuid;
+use Firebase\JWT\JWT;
+use Tuupola\Base62;
 
 
-return function (App $app) {
+return function (App $app, DI\Container $container) {
 
    
 
@@ -109,15 +107,16 @@ return function (App $app) {
 
     $app->get('/', function (Request $request, Response $response, array $args) {
 
-  
+
+        
        $renderer = new PhpRenderer('../public/templates');
+
        return $renderer->render($response, "home.html", $args);
         
 
 
       
     });
-
 
     //Clientes
     $app->group('/clientes', function (Group $group){
@@ -390,22 +389,12 @@ return function (App $app) {
    
     });
 
-    $app->group('/parts', function (Group $group){
-
-        $group->get('/',ListPartAction::class);
-        $group->get('/search/{query}',SearchPartAction::class);
-        $group->get('/{id}',ViewPartAction::class);
-        $group->post('',CreatePartAction::class);
-        $group->put('/{id}',UpdatePartAction::class);
-   
-    });
-
     $app->group('/inbox', function (Group $group){
 
-        $group->get('/',ListInboxAction::class);
-        $group->get('/{id}',ViewInboxAction::class);
-        $group->post('',CreateInboxAction::class);
-        $group->put('/{id}',UpdateInboxAction::class);
+        $group->get('/',\App\Application\Actions\Inbox\ListInboxAction::class);
+        $group->get('/{id}',\App\Application\Actions\Inbox\ViewInboxAction::class);
+        $group->post('',\App\Application\Actions\Inbox\CreateInboxAction::class);
+        $group->put('/{id}',\App\Application\Actions\Inbox\UpdateInboxAction::class);
    
     });
 
@@ -427,10 +416,6 @@ return function (App $app) {
         $group->delete('/{id}',DeleteLocationAction::class);
    
     });
-
-    /*$app->options('/locations', function (Request $request, Response $response): Response {
-        return $response;
-    });*/
 
 
     $app->group('/streams', function (Group $group){
@@ -470,6 +455,23 @@ return function (App $app) {
    
     });
 
+    $app->group('/authentication', function (Group $group){
+      
+        $group->post('/register',\App\Application\Actions\Authentication\RegisterAuthenticationAction::class);
+        $group->post('/login',\App\Application\Actions\Authentication\LoginAuthenticationAction::class);       
+   
+    });
+
+    $app->group('/partnumbers', function(Group $group){
+        $group->get('/',\App\Application\Actions\PartNumber\ListPartNumberAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\PartNumber\SearchPartNumberAction::class);
+        $group->get('/{id}',\App\Application\Actions\PartNumber\ViewPartNumberAction::class);
+        $group->post('/',\App\Application\Actions\PartNumber\CreatePartNumberAction::class);
+        $group->put('/{id}',\App\Application\Actions\PartNumber\UpdatePartNumberAction::class);
+        $group->delete('/{id}',\App\Application\Actions\PartNumber\DeletePartNumberAction::class);
+
+    });
+
     $app->group('/scopes', function (Group $group){
 
         $group->get('/',ListScopeAction::class);
@@ -498,6 +500,15 @@ return function (App $app) {
    
     });
 
+    $app->group('/baskets', function (Group $group){
+
+        $group->get('/',ListBasketAction::class);
+        $group->get('/{id}',ViewBasketAction::class);
+        $group->post('/',CreateBasketAction::class);
+        $group->put('/{id}',UpdateBasketAction::class);
+   
+    });
+
 
     $app->group('/users', function (Group $group){
 
@@ -507,6 +518,49 @@ return function (App $app) {
         $group->put('/{id}',\App\Application\Actions\Customer\UpdateUserAction::class);
         $group->delete('/{id}',\App\Application\Actions\Customer\DeleteUserAction::class);
     });
+
+    $app->post("/token", function ($request, $response, $arguments) {
+        
+        $requested_scopes = $request->getParsedBody() ?: [];
+    
+        $valid_scopes = [
+            "todo.create",
+            "todo.read",
+            "todo.update",
+            "todo.delete",
+            "todo.list",
+            "todo.all"
+        ];
+    
+        $scopes = array_filter($requested_scopes, function ($needle) use ($valid_scopes) {
+            return in_array($needle, $valid_scopes);
+        });
+    
+        $now = new DateTime();
+        $future = new DateTime("now +2 hours");
+        $server = $request->getServerParams();
+    
+        $jti = (new Base62)->encode(random_bytes(16));
+    
+        $payload = [
+            "iat" => $now->getTimeStamp(),
+            "exp" => $future->getTimeStamp(),
+            "jti" => $jti,
+            "sub" => $server["PHP_AUTH_USER"],
+            "scope" => $scopes
+        ];
+    
+        $secret = getenv("JWT_SECRET");
+        $token = JWT::encode($payload, $secret, "HS256");
+    
+        $data["token"] = $token;
+        $data["expires"] = $future->getTimeStamp();
+    
+        return $response->withStatus(201)
+            ->withHeader("Content-Type", "application/json")
+            ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    });
+
 
 
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {

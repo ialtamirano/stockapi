@@ -3,22 +3,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Inbox;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Inbox\Service\InboxCreate;
 
-class CreateInboxAction extends InboxAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class CreateInboxAction extends Action
 {
+
+    
+    private $inboxCreate;
+
+    public function __construct( LoggerInterface $logger,InboxCreate $inboxCreate)
+    {
+        parent::__construct($logger);
+       
+        $this->inboxCreate = $inboxCreate;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $inbox = $this->getFormData();
-       
-        $inbox->id = $this->inboxRepository->create($inbox);
+        $inboxFormData = $this->getFormData();
 
-        $this->logger->info("Inbox of id `$inbox->id` was created.");
+        $inboxFormData->id = $this->inboxCreate->create($inboxFormData);
 
-        return $this->respondWithData($inbox);
+        $this->logger->info("Inbox of id ".$inboxFormData->id." was created successfully.");
+
+        return $this->respondWithData($inboxFormData);
     }
 }

@@ -25,4 +25,6 @@ interface AccountRepository
     public function update(int $id, array $account);
 
     public function delete(int $id);
+
+    public function login(string $user, string $password);
 }

@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Inbox;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Inbox\Service\InboxUpdate;
 
-class UpdateInboxAction extends InboxAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateInboxAction extends Action
 {
+
+    
+    private $inboxUpdate;
+
+    public function __construct( LoggerInterface $logger,InboxUpdate $inboxUpdate)
+    {
+        parent::__construct($logger);
+       
+        $this->inboxUpdate = $inboxUpdate;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
+        $inboxFormData = $this->getFormData();
         $inboxId = (int) $this->resolveArg('id');
-        $inbox = $this->getFormData();
-       
-        $inbox->id = $this->inboxRepository->update($inboxId,$inbox);
 
-        $this->logger->info("Inbox of id `$inbox->id` was updated.");
+        $inboxFormData->id = $this->inboxUpdate->update($inboxId,$inboxFormData);
 
-        return $this->respondWithData($inbox);
+        $this->logger->info("Inbox of id ".$inboxFormData->id." was updated successfully.");
+
+        return $this->respondWithData($inboxFormData);
     }
 }

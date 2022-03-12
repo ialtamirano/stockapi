@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Inbox;
+namespace App\Domain\Inbox\Repository;
 
-use App\Domain\Inbox\InboxNotFoundException;
-use App\Domain\Inbox\InboxRepository;
+
+use App\Domain\DomainException\DomainRecordNotFoundException;
+
 
 use PDO;
 use \RedBeanPHP\R as R;
 
-class InboxModel implements InboxRepository
+class InboxRepository 
 {
     /**
      * @var PDO The database connection
@@ -42,7 +43,7 @@ class InboxModel implements InboxRepository
       
         if ( $inbox->id == 0)
         {
-            throw new InboxNotFoundException();
+            throw new DomainRecordNotFoundException();
         }
         return $inbox;
     }

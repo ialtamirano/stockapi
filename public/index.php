@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 
-
 use App\Application\Handlers\HttpErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
@@ -11,8 +10,12 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Views\PhpRenderer;
+use Tuupola\Middleware\JwtAuthentication;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
@@ -51,17 +54,14 @@ $app->addBodyParsingMiddleware();
 $middleware = require __DIR__ . '/../app/middleware.php';
 $middleware($app);
 
-
-
-
 // Register routes
 $routes = require __DIR__ . '/../app/routes.php';
-$routes($app);
-
-
+$routes($app, $container);
 
 /** @var SettingsInterface $settings */
 $settings = $container->get(SettingsInterface::class);
+
+
 
 $displayErrorDetails = $settings->get('displayErrorDetails');
 $logError = $settings->get('logError');
@@ -87,6 +87,11 @@ $app->addRoutingMiddleware();
 // Add Error Middleware
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
+
+
+$app->add(new Tuupola\Middleware\JwtAuthentication($settings->get('jwt_authentication')));
+
+
 
 // Run App & Emit Response
 $response = $app->handle($request);
