@@ -14,13 +14,13 @@ class ViewInboxAction extends Action
 {
 
     
-    private $inboxView;
+    private $service;
 
-    public function __construct( LoggerInterface $logger,InboxView $inboxView)
+    public function __construct( LoggerInterface $logger,InboxView $service)
     {
         parent::__construct($logger);
        
-        $this->inboxView = $inboxView;
+        $this->service = $service;
     }
 
 
@@ -31,12 +31,12 @@ class ViewInboxAction extends Action
     {
 
         
-        $inboxId = (int) $this->resolveArg('id');
+        $id = (int) $this->resolveArg('id');
 
-        $inboxFormData = $this->inboxView->view($inboxId);
+        $data = $this->service->view($id);
 
-        $this->logger->info("Inbox of id ".$inboxFormData->id." was updated successfully.");
+        $this->logger->info("Inbox of id ".$data->id." was updated successfully.");
 
-        return $this->respondWithData($inboxFormData);
+        return $this->respondWithData($data);
     }
 }

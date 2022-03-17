@@ -14,13 +14,13 @@ class CreateInboxAction extends Action
 {
 
     
-    private $inboxCreate;
+    private $service;
 
-    public function __construct( LoggerInterface $logger,InboxCreate $inboxCreate)
+    public function __construct( LoggerInterface $logger,InboxCreate $service)
     {
         parent::__construct($logger);
        
-        $this->inboxCreate = $inboxCreate;
+        $this->service = $service;
     }
 
 
@@ -32,7 +32,7 @@ class CreateInboxAction extends Action
 
         $inboxFormData = $this->getFormData();
 
-        $inboxFormData->id = $this->inboxCreate->create($inboxFormData);
+        $inboxFormData->id = $this->service->create($inboxFormData);
 
         $this->logger->info("Inbox of id ".$inboxFormData->id." was created successfully.");
 

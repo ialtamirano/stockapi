@@ -3,22 +3,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Basket;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Basket\Service\BasketCreate;
 
-class CreateBasketAction extends BasketAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class CreateBasketAction extends Action
 {
+
+    
+    private $basketCreate;
+
+    public function __construct( LoggerInterface $logger,BasketCreate $basketCreate)
+    {
+        parent::__construct($logger);
+       
+        $this->basketCreate = $basketCreate;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $basket = $this->getFormData();
-       
-        $basket->id = $this->basketRepository->create($basket);
+        $formData = $this->getFormData();
 
-        $this->logger->info("Basket of id `$basket->id` was created.");
+        $formData->id = $this->basketCreate->create($formData);
 
-        return $this->respondWithData($basket);
+        $this->logger->info("Basket of id ".$formData->id." was created successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

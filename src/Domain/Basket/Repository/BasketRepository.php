@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Basket;
+namespace App\Domain\Basket\Repository;
 
-use App\Domain\Basket\BasketNotFoundException;
-use App\Domain\Basket\BasketRepository;
+use App\Domain\DomainException\DomainRecordNotFoundException;
+
 
 use PDO;
 use \RedBeanPHP\R as R;
 
-class BasketModel implements BasketRepository
+class BasketRepository 
 {
     /**
      * @var PDO The database connection
@@ -43,7 +43,7 @@ class BasketModel implements BasketRepository
        //exit;
         if ( $basket->id == 0)
         {
-            throw new BasketNotFoundException();
+            throw new DomainRecordNotFoundException();
         }
 
         $basket->ownBasketitemList = $basket->ownBasketitemList;
@@ -90,7 +90,7 @@ class BasketModel implements BasketRepository
         }
         catch( Exception $e ) {
             R::rollback();
-            throw new BasketNotCommittedException();
+            throw new DomainNotCommittedException();
         }  
     }
     

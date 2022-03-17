@@ -78,10 +78,7 @@ use App\Application\Actions\Category\ListCategoryAction;
 use App\Application\Actions\Category\CreateCategoryAction;
 use App\Application\Actions\Category\UpdateCategoryAction;
 
-use App\Application\Actions\Basket\ViewBasketAction;
-use App\Application\Actions\Basket\ListBasketAction;
-use App\Application\Actions\Basket\CreateBasketAction;
-use App\Application\Actions\Basket\UpdateBasketAction;
+
 
 
 use Psr\Http\Message\ResponseInterface as Response;
@@ -502,10 +499,10 @@ return function (App $app, DI\Container $container) {
 
     $app->group('/baskets', function (Group $group){
 
-        $group->get('/',ListBasketAction::class);
-        $group->get('/{id}',ViewBasketAction::class);
-        $group->post('/',CreateBasketAction::class);
-        $group->put('/{id}',UpdateBasketAction::class);
+        $group->get('/',\App\Application\Actions\Basket\ListBasketAction::class);
+        $group->get('/{id}',\App\Application\Actions\Basket\ViewBasketAction::class);
+        $group->post('/',\App\Application\Actions\Basket\CreateBasketAction::class);
+        $group->put('/{id}',\App\Application\Actions\Basket\UpdateBasketAction::class);
    
     });
 

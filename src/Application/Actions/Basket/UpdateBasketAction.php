@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Basket;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Basket\Service\BasketUpdate;
 
-class UpdateBasketAction extends BasketAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateBasketAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,BasketUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $basketId = (int) $this->resolveArg('id');
-        $basket = $this->getFormData();
-       
-        $basket->id = $this->basketRepository->update($basketId,$basket);
+        $data = $this->getFormData();
+        $id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Basket of id `$basket->id` was updated.");
+        $data->id = $this->service->update($id,$data);
 
-        return $this->respondWithData($basket);
+        $this->logger->info("Basket of id ".$data->id." was updated successfully.");
+
+        return $this->respondWithData($data);
     }
 }

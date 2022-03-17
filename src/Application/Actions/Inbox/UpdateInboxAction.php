@@ -14,13 +14,13 @@ class UpdateInboxAction extends Action
 {
 
     
-    private $inboxUpdate;
+    private $service;
 
-    public function __construct( LoggerInterface $logger,InboxUpdate $inboxUpdate)
+    public function __construct( LoggerInterface $logger,InboxUpdate $service)
     {
         parent::__construct($logger);
        
-        $this->inboxUpdate = $inboxUpdate;
+        $this->service = $service;
     }
 
 
@@ -30,13 +30,13 @@ class UpdateInboxAction extends Action
     protected function action(): Response
     {
 
-        $inboxFormData = $this->getFormData();
-        $inboxId = (int) $this->resolveArg('id');
+        $data = $this->getFormData();
+        $id = (int) $this->resolveArg('id');
 
-        $inboxFormData->id = $this->inboxUpdate->update($inboxId,$inboxFormData);
+        $data->id = $this->service->update($id,$data);
 
-        $this->logger->info("Inbox of id ".$inboxFormData->id." was updated successfully.");
+        $this->logger->info("Inbox of id ".$data->id." was updated successfully.");
 
-        return $this->respondWithData($inboxFormData);
+        return $this->respondWithData($data);
     }
 }

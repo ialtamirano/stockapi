@@ -14,13 +14,13 @@ class ListInboxAction extends Action
 {
 
     
-    private $inboxList;
+    private $service;
 
-    public function __construct(LoggerInterface $logger,InboxList $inboxList)
+    public function __construct(LoggerInterface $logger,InboxList $service)
     {
         parent::__construct($logger);
        
-        $this->inboxList = $inboxList;
+        $this->service = $service;
     }
 
 
@@ -30,7 +30,7 @@ class ListInboxAction extends Action
     protected function action(): Response
     {
 
-        $inboxData = $this->inboxList->findAll();
+        $inboxData = $this->service->findAll();
 
         return $this->respondWithData($inboxData);
     }

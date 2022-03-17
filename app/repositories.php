@@ -15,7 +15,7 @@ use App\Domain\Account\AccountRepository;
 use App\Domain\Scope\ScopeRepository;
 use App\Domain\Customer\CustomerRepository;
 use App\Domain\Category\CategoryRepository;
-use App\Domain\Basket\BasketRepository;
+
 
 use App\Infrastructure\Persistence\User\UserModel;
 use App\Infrastructure\Persistence\Client\ClientModel;
@@ -30,7 +30,7 @@ use App\Infrastructure\Persistence\Account\AccountModel;
 use App\Infrastructure\Persistence\Scope\ScopeModel;
 use App\Infrastructure\Persistence\Customer\CustomerModel;
 use App\Infrastructure\Persistence\Category\CategoryModel;
-use App\Infrastructure\Persistence\Basket\BasketModel;
+
 
 
 use DI\ContainerBuilder;
@@ -79,8 +79,6 @@ return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         CategoryRepository::class => \DI\autowire(CategoryModel::class),
     ]);
-    $containerBuilder->addDefinitions([
-        BasketRepository::class => \DI\autowire(BasketModel::class),
-    ]);
+   
 };
 
