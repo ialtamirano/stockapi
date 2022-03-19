@@ -36,7 +36,7 @@ class BasketRepository
 
     public function findById($id)
     {
-        //R::debug(true);
+        
         $basket = R::load('basket', $id);
 
        //var_dump($basket);
