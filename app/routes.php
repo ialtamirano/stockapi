@@ -401,6 +401,8 @@ return function (App $app, DI\Container $container) {
     });
 
 
+
+    
     $app->group('/streams', function (Group $group){
 
         $group->get('/',ListStreamAction::class);
