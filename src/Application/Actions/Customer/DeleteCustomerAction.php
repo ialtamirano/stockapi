@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace App\Application\Actions\Customer;
 
 use App\Application\Actions\Action;
-use App\Domain\Customer\Service\CustomerUpdate;
+use App\Domain\Customer\Service\CustomerDelete;
 
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
-class UpdateCustomerAction extends Action
+class DeleteCustomerAction extends Action
 {
 
     
     private $service;
 
-    public function __construct( LoggerInterface $logger,CustomerUpdate $service)
+    public function __construct( LoggerInterface $logger,CustomerDelete $service)
     {
         parent::__construct($logger);
        
@@ -30,13 +30,13 @@ class UpdateCustomerAction extends Action
     protected function action(): Response
     {
 
-        $formData = $this->getFormData();
+        //$partNumberFormData = $this->getFormData();
         $Id = (int) $this->resolveArg('id');
 
-        $formData->id = $this->service->update($Id,$formData);
+        $result = $this->service->delete($Id);
 
-        $this->logger->info("Customer of id ".$formData->id." was updated successfully.");
+        $this->logger->info("Customer of id ".$Id." was deleted successfully.");
 
-        return $this->respondWithData($formData);
+        return $this->respondWithData($result);
     }
 }

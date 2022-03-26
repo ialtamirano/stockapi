@@ -9,11 +9,7 @@ use App\Application\Actions\User\CreateUserAction;
 use App\Application\Actions\User\UpdateUserAction;
 use App\Application\Actions\User\DeleteUserAction;
 
-use App\Application\Actions\Clientt\ViewClientAction;
-use App\Application\Actions\Client\ListClientAction;
-use App\Application\Actions\Client\CreateClientAction;
-use App\Application\Actions\Client\UpdateClientAction;
-use App\Application\Actions\Client\DeleteClientAction;
+
 
 use App\Application\Actions\Company\ViewCompanyAction;
 use App\Application\Actions\Company\ListCompanyAction;
@@ -68,10 +64,7 @@ use App\Application\Actions\Scope\UpdateScopeAction;
 use App\Application\Actions\Scope\DeleteScopeAction;
 
 
-use App\Application\Actions\Customer\ViewCustomerAction;
-use App\Application\Actions\Customer\ListCustomerAction;
-use App\Application\Actions\Customer\CreateCustomerAction;
-use App\Application\Actions\Customer\UpdateCustomerAction;
+
 
 use App\Application\Actions\Category\ViewCategoryAction;
 use App\Application\Actions\Category\ListCategoryAction;
@@ -368,14 +361,7 @@ return function (App $app, DI\Container $container) {
 
     });
 
-    $app->group('/clients', function (Group $group){
-
-        $group->get('/',ListClientAction::class);
-        $group->get('/{id}',ViewClientAction::class);
-        $group->post('/',CreateClientAction::class);
-        $group->put('/{id}',UpdateClientAction::class);
-        $group->delete('/{id}',DeleteClientAction::class);
-    });
+   
      
     $app->group('/companies', function (Group $group){
 
@@ -481,10 +467,12 @@ return function (App $app, DI\Container $container) {
 
     $app->group('/customers', function (Group $group){
 
-        $group->get('/',ListCustomerAction::class);
-        $group->get('/{id}',ViewCustomerAction::class);
-        $group->post('/',CreateCustomerAction::class);
-        $group->put('/{id}',UpdateCustomerAction::class);
+        $group->get('/',\App\Application\Actions\Customer\ListCustomerAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Customer\SearchCustomerAction::class);
+        $group->get('/{id}',\App\Application\Actions\Customer\ViewCustomerAction::class);
+        $group->post('/',\App\Application\Actions\Customer\CreateCustomerAction::class);
+        $group->put('/{id}',\App\Application\Actions\Customer\UpdateCustomerAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Customer\DeleteCustomerAction::class);
    
     });
 

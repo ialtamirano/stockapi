@@ -13,7 +13,7 @@ use App\Domain\Supplier\SupplierRepository;
 use App\Domain\Warehouse\WarehouseRepository;
 use App\Domain\Account\AccountRepository;
 use App\Domain\Scope\ScopeRepository;
-use App\Domain\Customer\CustomerRepository;
+
 use App\Domain\Category\CategoryRepository;
 
 
@@ -28,7 +28,6 @@ use App\Infrastructure\Persistence\Supplier\SupplierModel;
 use App\Infrastructure\Persistence\Warehouse\WarehouseModel;
 use App\Infrastructure\Persistence\Account\AccountModel;
 use App\Infrastructure\Persistence\Scope\ScopeModel;
-use App\Infrastructure\Persistence\Customer\CustomerModel;
 use App\Infrastructure\Persistence\Category\CategoryModel;
 
 
@@ -73,9 +72,7 @@ return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         ScopeRepository::class => \DI\autowire(Model::class),
     ]);
-    $containerBuilder->addDefinitions([
-        CustomerRepository::class => \DI\autowire(CustomerModel::class),
-    ]);
+ 
     $containerBuilder->addDefinitions([
         CategoryRepository::class => \DI\autowire(CategoryModel::class),
     ]);

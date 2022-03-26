@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Customer;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Customer\Service\CustomerView;
 
-class ViewCustomerAction extends CustomerAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class ViewCustomerAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,CustomerView $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $customerId = (int) $this->resolveArg('id');
-        $customer = $this->customerRepository->findById($customerId);
 
-        $this->logger->info("Customer of id `${customerId}` was viewed.");
+        
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($customer);
+        $formData = $this->service->view($Id);
+
+        $this->logger->info("Customer of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

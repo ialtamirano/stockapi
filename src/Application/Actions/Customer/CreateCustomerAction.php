@@ -3,22 +3,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Customer;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Customer\Service\CustomerCreate;
 
-class CreateCustomerAction extends CustomerAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class CreateCustomerAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,CustomerCreate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $customer = $this->getFormData();
-       
-        $customer->id = $this->customerRepository->create($customer);
+        $formData = $this->getFormData();
 
-        $this->logger->info("Customer of id `$customer->id` was created.");
+        $formData->id = $this->service->create($formData);
 
-        return $this->respondWithData($customer);
+        $this->logger->info("Customer of id ".$formData->id." was created successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

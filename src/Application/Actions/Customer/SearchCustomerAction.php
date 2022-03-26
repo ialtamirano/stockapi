@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace App\Application\Actions\Customer;
 
 use App\Application\Actions\Action;
-use App\Domain\Customer\Service\CustomerList;
+use App\Domain\Customer\Service\CustomerSearch;
 
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
-class ListCustomerAction extends Action
+class SearchCustomerAction extends Action
 {
 
     
     private $service;
 
-    public function __construct(LoggerInterface $logger,CustomerList $service)
+    public function __construct( LoggerInterface $logger,CustomerSearch $service)
     {
         parent::__construct($logger);
        
@@ -30,8 +30,11 @@ class ListCustomerAction extends Action
     protected function action(): Response
     {
 
-        $data = $this->service->findAll();
+       
+        $queryString =  $this->resolveArg('query');
 
-        return $this->respondWithData($data);
+        $formData = $this->service->search($queryString);
+
+        return $this->respondWithData($formData);
     }
 }
