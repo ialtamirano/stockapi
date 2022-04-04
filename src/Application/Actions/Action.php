@@ -93,6 +93,10 @@ abstract class Action
      */
     protected function resolveArg(string $name)
     {
+
+        //var_dump('XXXXXXX');
+        //var_dump($this->args);
+       
         if (!isset($this->args[$name])) {
             throw new HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
         }

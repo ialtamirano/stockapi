@@ -478,6 +478,19 @@ return function (App $app, DI\Container $container) {
    
     });
 
+
+    $app->group('/comments', function (Group $group){
+
+        $group->get('/',\App\Application\Actions\Comment\ListCommentAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Comment\SearchCommentAction::class);
+        $group->get('/{id}',\App\Application\Actions\Comment\ViewCommentAction::class);
+        $group->post('/',\App\Application\Actions\Comment\CreateCommentAction::class);
+        $group->put('/{id}',\App\Application\Actions\Comment\UpdateCommentAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Comment\DeleteCommentAction::class);
+   
+    });
+
+
     $app->group('/categories', function (Group $group){
 
         $group->get('/',ListCategoryAction::class);

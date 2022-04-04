@@ -30,7 +30,10 @@ class ListCommentAction extends Action
     protected function action(): Response
     {
 
-        $data = $this->service->findAll();
+        $entity_name =  $this->request->getQueryParams()['entity_name'];
+        $entity_id   =  $this->request->getQueryParams()['entity_id'];
+
+        $data = $this->service->findAll( $entity_name,$entity_id);
 
         return $this->respondWithData($data);
     }

@@ -40,7 +40,6 @@ final class CommentList
       
         // Create account
         $comments = $this->repository->findAll($entity_name, $entity_id);
-
         return $comments;
     }
 

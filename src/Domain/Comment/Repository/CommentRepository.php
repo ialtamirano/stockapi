@@ -32,9 +32,11 @@ final class CommentRepository
     public function findAll($entity_name, $entity_id):array
     {
         //$comments = R::findAll('comment');
-
-        $comments = R::find('comment', 'entity_name = ? AND entity_id = ?', [
-            $entity_name, $entity_id
+        
+        $comments = R::findAll('comment', 
+           ' entity_name = ? AND entity_id = ? ', [
+            $entity_name, 
+            $entity_id
             
         ]);
 
