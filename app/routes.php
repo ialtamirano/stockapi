@@ -449,11 +449,15 @@ return function (App $app, DI\Container $container) {
 
     $app->group('/partnumbers', function(Group $group){
         $group->get('/',\App\Application\Actions\PartNumber\ListPartNumberAction::class);
+       
         $group->get('/search/{query}',\App\Application\Actions\PartNumber\SearchPartNumberAction::class);
         $group->get('/{id}',\App\Application\Actions\PartNumber\ViewPartNumberAction::class);
         $group->post('/',\App\Application\Actions\PartNumber\CreatePartNumberAction::class);
         $group->put('/{id}',\App\Application\Actions\PartNumber\UpdatePartNumberAction::class);
         $group->delete('/{id}',\App\Application\Actions\PartNumber\DeletePartNumberAction::class);
+
+
+        $group->get('/customize',\App\Application\Actions\PartNumber\ListPartNumberAction::class);
 
     });
 
