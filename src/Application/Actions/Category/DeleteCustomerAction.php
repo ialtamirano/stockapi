@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace App\Application\Actions\Category;
 
 use App\Application\Actions\Action;
-use App\Domain\Category\Service\CategoryView;
+use App\Domain\Category\Service\CategoryDelete;
 
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
-class ViewCategoryAction extends Action
+class DeleteCategoryAction extends Action
 {
 
     
     private $service;
 
-    public function __construct( LoggerInterface $logger,CategoryView $service)
+    public function __construct( LoggerInterface $logger,CategoryDelete $service)
     {
         parent::__construct($logger);
        
@@ -30,13 +30,13 @@ class ViewCategoryAction extends Action
     protected function action(): Response
     {
 
-        
+        //$partNumberFormData = $this->getFormData();
         $Id = (int) $this->resolveArg('id');
 
-        $formData = $this->service->view($Id);
+        $result = $this->service->delete($Id);
 
-        $this->logger->info("Category of id ".$formData->id." was updated successfully.");
+        $this->logger->info("Category of id ".$Id." was deleted successfully.");
 
-        return $this->respondWithData($formData);
+        return $this->respondWithData($result);
     }
 }

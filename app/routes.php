@@ -2,14 +2,14 @@
 declare(strict_types=1);
 
 
-
+/*
 use App\Application\Actions\User\ViewUserAction;
 use App\Application\Actions\User\ListUsertAction;
 use App\Application\Actions\User\CreateUserAction;
 use App\Application\Actions\User\UpdateUserAction;
 use App\Application\Actions\User\DeleteUserAction;
 
-
+*/
 
 use App\Application\Actions\Company\ViewCompanyAction;
 use App\Application\Actions\Company\ListCompanyAction;
@@ -64,12 +64,6 @@ use App\Application\Actions\Scope\UpdateScopeAction;
 use App\Application\Actions\Scope\DeleteScopeAction;
 
 
-
-
-use App\Application\Actions\Category\ViewCategoryAction;
-use App\Application\Actions\Category\ListCategoryAction;
-use App\Application\Actions\Category\CreateCategoryAction;
-use App\Application\Actions\Category\UpdateCategoryAction;
 
 
 
@@ -457,7 +451,7 @@ return function (App $app, DI\Container $container) {
         $group->delete('/{id}',\App\Application\Actions\PartNumber\DeletePartNumberAction::class);
 
 
-        $group->get('/customize',\App\Application\Actions\PartNumber\ListPartNumberAction::class);
+       // $group->get('/customize',\App\Application\Actions\PartNumber\ListPartNumberAction::class);
 
     });
 
@@ -497,10 +491,12 @@ return function (App $app, DI\Container $container) {
 
     $app->group('/categories', function (Group $group){
 
-        $group->get('/',ListCategoryAction::class);
-        $group->get('/{id}',ViewCategoryAction::class);
-        $group->post('/',CreateCategoryAction::class);
-        $group->put('/{id}',UpdateCategoryAction::class);
+        $group->get('/',\App\Application\Actions\Category\ListCategoryAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Category\SearchCategoryAction::class);
+        $group->get('/{id}',\App\Application\Actions\Category\ViewCategoryAction::class);
+        $group->post('/',\App\Application\Actions\Category\CreateCategoryAction::class);
+        $group->put('/{id}',\App\Application\Actions\Category\UpdateCategoryAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Category\DeleteCategoryAction::class);
    
     });
 

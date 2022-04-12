@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Category;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Category\Service\CategoryUpdate;
 
-class UpdateCategoryAction extends CategoryAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateCategoryAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,CategoryUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $categoryId = (int) $this->resolveArg('id');
-        $category = $this->getFormData();
-       
-        $category->id = $this->categoryRepository->update($categoryId,$category);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Category of id `$category->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($category);
+        $this->logger->info("Category of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }
