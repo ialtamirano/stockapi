@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\Domain\User\UserRepository;
+
 use App\Domain\Client\ClientRepository;
 use App\Domain\Company\CompanyRepository;
 
@@ -17,7 +17,6 @@ use App\Domain\Scope\ScopeRepository;
 
 
 
-use App\Infrastructure\Persistence\User\UserModel;
 use App\Infrastructure\Persistence\Client\ClientModel;
 use App\Infrastructure\Persistence\Company\CompanyModel;
 
@@ -35,10 +34,7 @@ use App\Infrastructure\Persistence\Scope\ScopeModel;
 use DI\ContainerBuilder;
 
 return function (ContainerBuilder $containerBuilder) {
-    // Here we map our UserRepository interface to its in memory implementation
-    $containerBuilder->addDefinitions([
-        UserRepository::class => \DI\autowire(UserModel::class),
-    ]);
+   
 
     $containerBuilder->addDefinitions([
         ClientRepository::class => \DI\autowire(ClientModel::class),
