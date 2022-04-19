@@ -489,6 +489,18 @@ return function (App $app, DI\Container $container) {
     });
 
 
+    $app->group('/requisitions', function (Group $group){
+
+        $group->get('/',\App\Application\Actions\Requisition\ListRequisitionAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Requisition\SearchRequisitionAction::class);
+        $group->get('/{id}',\App\Application\Actions\Requisition\ViewRequisitionAction::class);
+        $group->post('/',\App\Application\Actions\Requisition\CreateRequisitionAction::class);
+        $group->put('/{id}',\App\Application\Actions\Requisition\UpdateRequisitionAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Requisition\DeleteRequisitionAction::class);
+   
+    });
+
+
     $app->group('/categories', function (Group $group){
 
         $group->get('/',\App\Application\Actions\Category\ListCategoryAction::class);
