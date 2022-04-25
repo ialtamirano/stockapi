@@ -41,11 +41,11 @@ final class CommentCreate
         $this->validateNew($data);
 
         // Part Number exist validation
-        if($this->commentExist($data->code) )
+        /*if($this->commentExist($data->code) )
         { 
             throw new DomainValidationException("El codigo de cliente ya existe!", []);     
         }
-
+*/
       
         // Create account
         $commentId = $this->repository->create($data);

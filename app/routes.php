@@ -2,14 +2,6 @@
 declare(strict_types=1);
 
 
-/*
-use App\Application\Actions\User\ViewUserAction;
-use App\Application\Actions\User\ListUsertAction;
-use App\Application\Actions\User\CreateUserAction;
-use App\Application\Actions\User\UpdateUserAction;
-use App\Application\Actions\User\DeleteUserAction;
-
-*/
 
 use App\Application\Actions\Company\ViewCompanyAction;
 use App\Application\Actions\Company\ListCompanyAction;
@@ -62,9 +54,6 @@ use App\Application\Actions\Scope\ListScopeAction;
 use App\Application\Actions\Scope\CreateScopeAction;
 use App\Application\Actions\Scope\UpdateScopeAction;
 use App\Application\Actions\Scope\DeleteScopeAction;
-
-
-
 
 
 
