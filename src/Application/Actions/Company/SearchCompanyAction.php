@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions\Location;
+namespace App\Application\Actions\Company;
 
 use App\Application\Actions\Action;
-use App\Domain\Location\Service\LocationList;
+use App\Domain\Company\Service\CompanySearch;
 
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
-class ListLocationAction extends Action
+class SearchCompanyAction extends Action
 {
 
     
     private $service;
 
-    public function __construct(LoggerInterface $logger,LocationList $service)
+    public function __construct( LoggerInterface $logger,CompanySearch $service)
     {
         parent::__construct($logger);
        
@@ -30,8 +30,11 @@ class ListLocationAction extends Action
     protected function action(): Response
     {
 
-        $data = $this->service->findAll();
+       
+        $queryString =  $this->resolveArg('query');
 
-        return $this->respondWithData($data);
+        $formData = $this->service->search($queryString);
+
+        return $this->respondWithData($formData);
     }
 }

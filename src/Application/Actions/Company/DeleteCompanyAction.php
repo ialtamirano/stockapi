@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions\Location;
+namespace App\Application\Actions\Company;
 
 use App\Application\Actions\Action;
-use App\Domain\Location\Service\LocationDelete;
+use App\Domain\Company\Service\CompanyDelete;
 
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
-class DeleteLocationAction extends Action
+class DeleteCompanyAction extends Action
 {
 
     
     private $service;
 
-    public function __construct( LoggerInterface $logger,LocationDelete $service)
+    public function __construct( LoggerInterface $logger,CompanyDelete $service)
     {
         parent::__construct($logger);
        
@@ -35,7 +35,7 @@ class DeleteLocationAction extends Action
 
         $result = $this->service->delete($Id);
 
-        $this->logger->info("Location of id ".$Id." was deleted successfully.");
+        $this->logger->info("Company of id ".$Id." was deleted successfully.");
 
         return $this->respondWithData($result);
     }

@@ -7,7 +7,7 @@ use App\Domain\Company\CompanyRepository;
 
 
 use App\Domain\Receipt\ReceiptRepository;
-use App\Domain\Location\LocationRepository;
+
 use App\Domain\Stream\StreamRepository;
 use App\Domain\Supplier\SupplierRepository;
 use App\Domain\Warehouse\WarehouseRepository;
@@ -21,7 +21,7 @@ use App\Infrastructure\Persistence\Client\ClientModel;
 use App\Infrastructure\Persistence\Company\CompanyModel;
 
 use App\Infrastructure\Persistence\Receipt\ReceiptModel;
-use App\Infrastructure\Persistence\Location\LocationModel;
+
 use App\Infrastructure\Persistence\Stream\StreamModel;
 use App\Infrastructure\Persistence\Supplier\SupplierModel;
 use App\Infrastructure\Persistence\Warehouse\WarehouseModel;
@@ -36,13 +36,9 @@ use DI\ContainerBuilder;
 return function (ContainerBuilder $containerBuilder) {
    
 
-    $containerBuilder->addDefinitions([
-        ClientRepository::class => \DI\autowire(ClientModel::class),
-    ]);
 
-    $containerBuilder->addDefinitions([
-        CompanyRepository::class => \DI\autowire(CompanyModel::class),
-    ]);
+
+
 
 
     $containerBuilder->addDefinitions([

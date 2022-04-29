@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 
 
-use App\Application\Actions\Company\ViewCompanyAction;
-use App\Application\Actions\Company\ListCompanyAction;
-use App\Application\Actions\Company\CreateCompanyAction;
-use App\Application\Actions\Company\UpdateCompanyAction;
+
 
 
 use App\Application\Actions\Receipt\ViewReceiptAction;
@@ -15,11 +12,7 @@ use App\Application\Actions\Receipt\CreateReceiptAction;
 use App\Application\Actions\Receipt\UpdateReceiptAction;
 
 
-use App\Application\Actions\Location\ViewLocationAction;
-use App\Application\Actions\Location\ListLocationAction;
-use App\Application\Actions\Location\CreateLocationAction;
-use App\Application\Actions\Location\UpdateLocationAction;
-use App\Application\Actions\Location\DeleteLocationAction;
+
 
 use App\Application\Actions\Stream\ViewStreamAction;
 use App\Application\Actions\Stream\ListStreamAction;
@@ -87,12 +80,16 @@ return function (App $app, DI\Container $container) {
     });
 
      
+
+
     $app->group('/companies', function (Group $group){
 
-        $group->get('/',ListCompanyAction::class);
-        $group->get('/{id}',ViewCompanyAction::class);
-        $group->post('',CreateCompanyAction::class);
-        $group->put('/{id}',UpdateCompanyAction::class);
+        $group->get('/',\App\Application\Actions\Company\ListCompanyAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Company\SearchCompanyAction::class);
+        $group->get('/{id}',\App\Application\Actions\Company\ViewCompanyAction::class);
+        $group->post('/',\App\Application\Actions\Company\CreateCompanyAction::class);
+        $group->put('/{id}',\App\Application\Actions\Company\UpdateCompanyAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Company\DeleteCompanyAction::class);
    
     });
 
@@ -121,6 +118,17 @@ return function (App $app, DI\Container $container) {
         $group->post('/',CreateLocationAction::class);    
         $group->put('/{id}',UpdateLocationAction::class);
         $group->delete('/{id}',DeleteLocationAction::class);
+   
+    });
+
+    $app->group('/locations', function (Group $group){
+
+        $group->get('/',\App\Application\Actions\Location\ListLocationAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Location\SearchLocationAction::class);
+        $group->get('/{id}',\App\Application\Actions\Location\ViewLocationAction::class);
+        $group->post('/',\App\Application\Actions\Location\CreateLocationAction::class);
+        $group->put('/{id}',\App\Application\Actions\Location\UpdateLocationAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Location\DeleteLocationAction::class);
    
     });
 

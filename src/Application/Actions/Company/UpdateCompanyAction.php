@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Company;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Company\Service\CompanyUpdate;
 
-class UpdateCompanyAction extends CompanyAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateCompanyAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,CompanyUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $companyId = (int) $this->resolveArg('id');
-        $company = $this->getFormData();
-       
-        $company->id = $this->companyRepository->update($companyId, $company);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Company of id `$company->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($company);
+        $this->logger->info("Company of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

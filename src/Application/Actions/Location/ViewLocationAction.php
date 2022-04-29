@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Location;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Location\Service\LocationView;
 
-class ViewLocationAction extends LocationAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class ViewLocationAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,LocationView $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $locationId = (int) $this->resolveArg('id');
-        $location = $this->locationRepository->findById($locationId);
 
-        $this->logger->info("Location of id `${locationId}` was viewed.");
+        
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($location);
+        $formData = $this->service->view($Id);
+
+        $this->logger->info("Location of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

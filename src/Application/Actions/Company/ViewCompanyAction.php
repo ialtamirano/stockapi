@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Company;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Company\Service\CompanyView;
 
-class ViewCompanyAction extends CompanyAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class ViewCompanyAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,CompanyView $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $companyId = (int) $this->resolveArg('id');
-        $company = $this->companyRepository->findById($companyId);
 
-        $this->logger->info("Company of id `${companyId}` was viewed.");
+        
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($company);
+        $formData = $this->service->view($Id);
+
+        $this->logger->info("Company of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

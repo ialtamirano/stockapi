@@ -1,28 +1,28 @@
 <?php
 
 
-namespace App\Domain\PartNumber\Service;
+namespace App\Domain\Location\Service;
 
-use App\Domain\PartNumber\Repository\PartNumberRepository;
+use App\Domain\Location\Repository\LocationRepository;
 use App\Domain\DomainException\DomainValidationException;
 
 
 /**
  * Service.
  */
-final class PartNumberView
+final class LocationView
 {
     /**
-     * @var PartNumberRepository
+     * @var LocationRepository
      */
     private $repository;
 
     /**
      * The constructor.
      *
-     * @param PartNumberRepository $repository The repository
+     * @param LocationRepository $repository The repository
      */
-    public function __construct(PartNumberRepository $repository)
+    public function __construct(LocationRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -36,11 +36,15 @@ final class PartNumberView
      */
     public function view($id)
     {
+        // Input validation
+        //$this->validate($data);
 
+
+      
         // Update account
-        $partNumber = $this->repository->findById($id);
+        $data= $this->repository->findById($id);
 
-        return $partNumber;
+        return $data;
     }
 
   

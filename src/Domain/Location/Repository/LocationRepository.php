@@ -1,15 +1,16 @@
 <?php
-declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Location;
+namespace App\Domain\Location\Repository;
 
-use App\Domain\Location\LocationNotFoundException;
-use App\Domain\Location\LocationRepository;
+use App\Domain\DomainException\DomainRecordNotFoundException;
+
 
 use PDO;
 use \RedBeanPHP\R as R;
-
-class LocationModel implements LocationRepository
+/**
+ * Repository.
+ */
+final class LocationRepository
 {
     /**
      * @var PDO The database connection
@@ -27,12 +28,33 @@ class LocationModel implements LocationRepository
     }
 
 
+    
     public function findAll():array
     {
         $locations = R::findAll('location');
 
         return R::exportAll($locations);
     }
+
+    public function search($query):array
+    {
+        
+        $locations = R::find('location', 'code LIKE ? OR name LIKE ? OR description LIKE ? OR tags LIKE ?', [
+            '%' . $query . '%',
+            '%' . $query . '%',
+            '%' . $query . '%',
+            '%' . $query . '%'
+        ]);
+
+        if ( count($locations) == 0)
+        {
+            throw new DomainRecordNotFoundException();
+        }
+
+        return R::exportAll($locations);
+    }
+
+   
 
     public function findById($id)
     {
@@ -42,21 +64,23 @@ class LocationModel implements LocationRepository
       
         if ( $location->id == 0)
         {
-            throw new LocationNotFoundException();
+            throw new DomainRecordNotFoundException();
         }
         return $location;
     }
 
-    public function create($location)
-    {
+
+
+
+    public function create($location) {
 
         $bean = R::dispense('location');
 
         $bean->import($location);
-
+        
         return $id = R::store($bean);
     }
-    
+
     public function update($id, $location)
     {
 
@@ -67,6 +91,7 @@ class LocationModel implements LocationRepository
         return $id = R::store($bean);
     }
 
+
     public function delete($id)
     {
 
@@ -74,7 +99,7 @@ class LocationModel implements LocationRepository
 
         if ( $location->id == 0)
         {
-            throw new LocationNotFoundException();
+            throw new DomainRecordNotFoundException();
         }
 
         R::trash( $location);
@@ -83,4 +108,26 @@ class LocationModel implements LocationRepository
 
         return true;
     }
+
+
+
+
+    public function findByCode($locationCode)
+    {
+
+        $location = R::findOne('location', 'code =  ? ', [
+            $locationCode
+        ]);
+
+        if($location){
+            if ( $location->id == 0){
+                throw new DomainRecordNotFoundException();
+            }        
+        }
+
+        return $location;
+    }
+
+
+    
 }
