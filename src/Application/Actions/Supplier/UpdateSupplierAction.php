@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Supplier;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Supplier\Service\SupplierUpdate;
 
-class UpdateSupplierAction extends SupplierAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateSupplierAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,SupplierUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $supplierId = (int) $this->resolveArg('id');
-        $supplier = $this->getFormData();
-       
-        $supplier->id = $this->supplierRepository->update($supplierId,$supplier);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Supplier of id `$supplier->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($supplier);
+        $this->logger->info("Supplier of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

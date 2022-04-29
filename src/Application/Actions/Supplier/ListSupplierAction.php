@@ -3,19 +3,35 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Supplier;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Supplier\Service\SupplierList;
 
-class ListStreamAction extends StreamAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class ListSupplierAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct(LoggerInterface $logger,SupplierList $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $Supplier = $this->streamRepository->findAll();
 
-        $this->logger->info("Supplier list was viewed.");
+        $data = $this->service->findAll();
 
-        return $this->respondWithData($Supplier);
+        return $this->respondWithData($data);
     }
 }

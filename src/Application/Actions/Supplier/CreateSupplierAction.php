@@ -3,22 +3,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Supplier;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Supplier\Service\SupplierCreate;
 
-class CreateSupplierAction extends SupplierAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class CreateSupplierAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,SupplierCreate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $supplier = $this->getFormData();
-       
-        $supplier->id = $this->supplierRepository->create($supplier);
+        $formData = $this->getFormData();
 
-        $this->logger->info("Supplier of id `$supplier->id` was created.");
+        $formData->id = $this->service->create($formData);
 
-        return $this->respondWithData($supplier);
+        $this->logger->info("Supplier of id ".$formData->id." was created successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

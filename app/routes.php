@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 
 
-
-
-
 use App\Application\Actions\Receipt\ViewReceiptAction;
 use App\Application\Actions\Receipt\ListReceiptAction;
 use App\Application\Actions\Receipt\CreateReceiptAction;
@@ -19,14 +16,6 @@ use App\Application\Actions\Stream\ListStreamAction;
 use App\Application\Actions\Stream\CreateStreamAction;
 use App\Application\Actions\Stream\UpdateStreamAction;
 use App\Application\Actions\Stream\DeleteStreamAction;
-
-
-use App\Application\Actions\Supplier\ViewSupplierAction;
-use App\Application\Actions\Supplier\ListSupplierAction;
-use App\Application\Actions\Supplier\CreateSupplierAction;
-use App\Application\Actions\Supplier\UpdateSupplierAction;
-use App\Application\Actions\Supplier\DeleteSupplierAction;
-
 
 use App\Application\Actions\Warehouse\ViewWarehouseAction;
 use App\Application\Actions\Warehouse\ListWarehouseAction;
@@ -111,15 +100,7 @@ return function (App $app, DI\Container $container) {
    
     });
 
-    $app->group('/locations', function (Group $group){
 
-        $group->get('/',ListLocationAction::class);
-        $group->get('/{id}',ViewLocationAction::class);
-        $group->post('/',CreateLocationAction::class);    
-        $group->put('/{id}',UpdateLocationAction::class);
-        $group->delete('/{id}',DeleteLocationAction::class);
-   
-    });
 
     $app->group('/locations', function (Group $group){
 
@@ -146,22 +127,27 @@ return function (App $app, DI\Container $container) {
     });
     $app->group('/suppliers', function (Group $group){
 
-        $group->get('/',ListSupplierAction::class);
-        $group->get('/{id}',ViewSupplierAction::class);
-        $group->post('/',CreateSupplierAction::class);
-        $group->put('/{id}',UpdateSupplierAction::class);
-        $group->delete('/{id}',DeleteSupplierAction::class);
+        $group->get('/',\App\Application\Actions\Supplier\ListSupplierAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Supplier\SearchSupplierAction::class);
+        $group->get('/{id}',\App\Application\Actions\Supplier\ViewSupplierAction::class);
+        $group->post('/',\App\Application\Actions\Supplier\CreateSupplierAction::class);
+        $group->put('/{id}',\App\Application\Actions\Supplier\UpdateSupplierAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Supplier\DeleteSupplierAction::class);
    
     });
+
     $app->group('/warehouses', function (Group $group){
 
-        $group->get('/',ListWarehouseAction::class);
-        $group->get('/{id}',ViewWarehouseAction::class);
-        $group->post('/',CreateWarehouseAction::class);
-        $group->put('/{id}',UpdateWarehouseAction::class);
-        $group->delete('/{id}',DeleteWarehouseAction::class);
+        $group->get('/',\App\Application\Actions\Warehouse\ListWarehouseAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Warehouse\SearchWarehouseAction::class);
+        $group->get('/{id}',\App\Application\Actions\Warehouse\ViewWarehouseAction::class);
+        $group->post('/',\App\Application\Actions\Warehouse\CreateWarehouseAction::class);
+        $group->put('/{id}',\App\Application\Actions\Warehouse\UpdateWarehouseAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Warehouse\DeleteWarehouseAction::class);
    
     });
+
+
     $app->group('/accounts', function (Group $group){
 
         $group->get('/',ListAccountAction::class);

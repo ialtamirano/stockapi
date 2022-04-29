@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Warehouse;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Warehouse\Service\WarehouseDelete;
 
-class DeleteWarehouseAction extends WarehouseAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class DeleteWarehouseAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,WarehouseDelete $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $warehouseId = (int) $this->resolveArg('id');
-        $supplier = $this->warehouseRepository->delete($warehouseId);
 
-        $this->logger->info("Warehouse of id `${warehouseId}` was deleted.");
+        //$partNumberFormData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($supplier);
+        $result = $this->service->delete($Id);
+
+        $this->logger->info("Warehouse of id ".$Id." was deleted successfully.");
+
+        return $this->respondWithData($result);
     }
 }

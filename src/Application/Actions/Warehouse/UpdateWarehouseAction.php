@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Warehouse;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Warehouse\Service\WarehouseUpdate;
 
-class UpdateWarehouseAction extends WarehouseAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateWarehouseAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,WarehouseUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $warehouseId = (int) $this->resolveArg('id');
-        $warehouse = $this->getFormData();
-       
-        $warehouse->id = $this->warehouseRepository->update($warehouseId,$warehouse);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Warehouse of id `$warehouse->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($warehouse);
+        $this->logger->info("Warehouse of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }
