@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Scope;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Scope\Service\ScopeDelete;
 
-class DeleteScopeAction extends ScopeAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class DeleteScopeAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,ScopeDelete $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $ScopeId = (int) $this->resolveArg('id');
-        $Scope = $this->scopeRepository->delete($ScopeId);
 
-        $this->logger->info("Scope of id `${ScopeId}` was deleted.");
+        //$partNumberFormData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($Scope);
+        $result = $this->service->delete($Id);
+
+        $this->logger->info("Scope of id ".$Id." was deleted successfully.");
+
+        return $this->respondWithData($result);
     }
 }

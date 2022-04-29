@@ -3,22 +3,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Account;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Account\Service\AccountCreate;
 
-class CreateAccountAction extends AccountAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class CreateAccountAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,AccountCreate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $account = $this->getFormData();
-       
-        $account->id = $this->accountRepository->create($account);
+        $formData = $this->getFormData();
 
-        $this->logger->info("Account of id `$account->id` was created.");
+        $formData->id = $this->service->create($formData);
 
-        return $this->respondWithData($account);
+        $this->logger->info("Account of id ".$formData->id." was created successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

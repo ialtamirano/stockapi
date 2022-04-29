@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Account;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Account\Service\AccountDelete;
 
-class DeleteAccountAction extends AccountAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class DeleteAccountAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,AccountDelete $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $accountId = (int) $this->resolveArg('id');
-        $account = $this->accountRepository->delete($accountId);
 
-        $this->logger->info("Account of id `${accountId}` was deleted.");
+        //$partNumberFormData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($account);
+        $result = $this->service->delete($Id);
+
+        $this->logger->info("Account of id ".$Id." was deleted successfully.");
+
+        return $this->respondWithData($result);
     }
 }

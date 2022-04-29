@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Account;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Account\Service\AccountUpdate;
 
-class UpdateAccountAction extends AccountAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateAccountAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,AccountUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $accountId = (int) $this->resolveArg('id');
-        $account = $this->getFormData();
-       
-        $account->id = $this->accountRepository->update($accountId,$account);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Account of id `$account->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($account);
+        $this->logger->info("Account of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

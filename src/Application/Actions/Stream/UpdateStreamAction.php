@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Stream;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Stream\Service\StreamUpdate;
 
-class UpdateStreamAction extends StreamAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateStreamAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,StreamUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $streamId = (int) $this->resolveArg('id');
-        $stream = $this->getFormData();
-       
-        $stream->id = $this->streamRepository->update($streamId,$stream);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Stream of id `$stream->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($stream);
+        $this->logger->info("Stream of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

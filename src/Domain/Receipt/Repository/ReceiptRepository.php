@@ -1,15 +1,17 @@
 <?php
-declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Receipt;
+namespace App\Domain\Receipt\Repository;
 
-use App\Domain\Receipt\ReceiptNotFoundException;
-use App\Domain\Receipt\ReceiptRepository;
+use App\Domain\DomainException\DomainRecordNotFoundException;
+use App\Domain\DomainException\DomainNotCommittedException;
+
 
 use PDO;
 use \RedBeanPHP\R as R;
-
-class ReceiptModel implements ReceiptRepository
+/**
+ * Repository.
+ */
+final class ReceiptRepository
 {
     /**
      * @var PDO The database connection
@@ -27,6 +29,7 @@ class ReceiptModel implements ReceiptRepository
     }
 
 
+    
     public function findAll():array
     {
         $receipts = R::findAll('receipt');
@@ -34,8 +37,29 @@ class ReceiptModel implements ReceiptRepository
         return R::exportAll($receipts);
     }
 
+    public function search($query):array
+    {
+        
+        $receipts = R::find('receipt', 'code LIKE ? OR name LIKE ? OR description LIKE ? OR tags LIKE ?', [
+            '%' . $query . '%',
+            '%' . $query . '%',
+            '%' . $query . '%',
+            '%' . $query . '%'
+        ]);
+
+        if ( count($receipts) == 0)
+        {
+            throw new DomainRecordNotFoundException();
+        }
+
+        return R::exportAll($receipts);
+    }
+
+   
+
     public function findById($id)
     {
+
         R::debug(true);
         $receipt = R::load('receipt', $id);
 
@@ -50,8 +74,11 @@ class ReceiptModel implements ReceiptRepository
         return $receipt;
     }
 
-    public function create($receipt)
-    {
+
+
+
+    public function create($receipt) {
+
         R::begin();
 
         try{
@@ -93,10 +120,10 @@ class ReceiptModel implements ReceiptRepository
         }
         catch( Exception $e ) {
             R::rollback();
-            throw new ReceiptNotCommittedException();
-        }  
+            throw new DomainNotCommittedException();
+        }  ;
     }
-    
+
     public function update($id, $receipt)
     {
 
@@ -106,4 +133,44 @@ class ReceiptModel implements ReceiptRepository
 
         return $id = R::store($bean);
     }
+
+
+    public function delete($id)
+    {
+
+        $receipt = R::load('receipt', $id);
+
+        if ( $receipt->id == 0)
+        {
+            throw new DomainRecordNotFoundException();
+        }
+
+        R::trash( $receipt);
+
+      
+
+        return true;
+    }
+
+
+
+
+    public function findByCode($receiptCode)
+    {
+
+        $receipt = R::findOne('receipt', 'code =  ? ', [
+            $receiptCode
+        ]);
+
+        if($receipt){
+            if ( $receipt->id == 0){
+                throw new DomainRecordNotFoundException();
+            }        
+        }
+
+        return $receipt;
+    }
+
+
+    
 }

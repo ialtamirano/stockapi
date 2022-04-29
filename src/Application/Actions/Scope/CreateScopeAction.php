@@ -3,22 +3,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Scope;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Scope\Service\ScopeCreate;
 
-class CreateScopeAction extends ScopeAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class CreateScopeAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,ScopeCreate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $Scope = $this->getFormData();
-       
-        $Scope->id = $this->scopeRepository->create($Scope);
+        $formData = $this->getFormData();
 
-        $this->logger->info("Scope of id `$Scope->id` was created.");
+        $formData->id = $this->service->create($formData);
 
-        return $this->respondWithData($Scope);
+        $this->logger->info("Scope of id ".$formData->id." was created successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

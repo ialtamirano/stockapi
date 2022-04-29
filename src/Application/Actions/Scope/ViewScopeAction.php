@@ -1,23 +1,42 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions\Scope; 
-//purebaaa
+namespace App\Application\Actions\Scope;
+
+use App\Application\Actions\Action;
+use App\Domain\Scope\Service\ScopeView;
+
 
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
 
-class ViewScopeAction extends ScopeAction
+class ViewScopeAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,ScopeView $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $scopeId = (int) $this->resolveArg('id');
-        $scope = $this->scopeRepository->findById($scopeId);
 
-        $this->logger->info("scope of id `${scopeId}` was viewed.");
+        
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($scope);
+        $formData = $this->service->view($Id);
+
+        $this->logger->info("Scope of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

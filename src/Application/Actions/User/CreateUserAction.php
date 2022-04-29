@@ -3,22 +3,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\User;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\User\Service\UserCreate;
 
-class CreateUserAction extends UserAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class CreateUserAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,UserCreate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $User = $this->getFormData();
-       
-        $User->id = $this->userRepository->create($User);
+        $formData = $this->getFormData();
 
-        $this->logger->info("User of id `$User->id` was created.");
+        $formData->id = $this->service->create($formData);
 
-        return $this->respondWithData($User);
+        $this->logger->info("User of id ".$formData->id." was created successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

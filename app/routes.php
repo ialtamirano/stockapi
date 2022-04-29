@@ -3,39 +3,6 @@ declare(strict_types=1);
 
 
 
-use App\Application\Actions\Receipt\ViewReceiptAction;
-use App\Application\Actions\Receipt\ListReceiptAction;
-use App\Application\Actions\Receipt\CreateReceiptAction;
-use App\Application\Actions\Receipt\UpdateReceiptAction;
-
-
-
-
-use App\Application\Actions\Stream\ViewStreamAction;
-use App\Application\Actions\Stream\ListStreamAction;
-use App\Application\Actions\Stream\CreateStreamAction;
-use App\Application\Actions\Stream\UpdateStreamAction;
-use App\Application\Actions\Stream\DeleteStreamAction;
-
-use App\Application\Actions\Warehouse\ViewWarehouseAction;
-use App\Application\Actions\Warehouse\ListWarehouseAction;
-use App\Application\Actions\Warehouse\CreateWarehouseAction;
-use App\Application\Actions\Warehouse\UpdateWarehouseAction;
-use App\Application\Actions\Warehouse\DeleteWarehouseAction;
-
-use App\Application\Actions\Account\ViewAccountAction;
-use App\Application\Actions\Account\ListAccountAction;
-use App\Application\Actions\Account\CreateAccountAction;
-
-use App\Application\Actions\Account\UpdateAccountAction;
-use App\Application\Actions\Account\DeleteAccountAction;
-
-
-use App\Application\Actions\Scope\ViewScopeAction;
-use App\Application\Actions\Scope\ListScopeAction;
-use App\Application\Actions\Scope\CreateScopeAction;
-use App\Application\Actions\Scope\UpdateScopeAction;
-use App\Application\Actions\Scope\DeleteScopeAction;
 
 
 
@@ -68,9 +35,6 @@ return function (App $app, DI\Container $container) {
     
     });
 
-     
-
-
     $app->group('/companies', function (Group $group){
 
         $group->get('/',\App\Application\Actions\Company\ListCompanyAction::class);
@@ -93,10 +57,12 @@ return function (App $app, DI\Container $container) {
 
     $app->group('/receipts', function (Group $group){
 
-        $group->get('/',ListReceiptAction::class);
-        $group->get('/{id}',ViewReceiptAction::class);
-        $group->post('',CreateReceiptAction::class);
-        $group->put('/{id}',UpdateReceiptAction::class);
+        $group->get('/',\App\Application\Actions\Receipt\ListReceiptAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Receipt\SearchReceiptAction::class);
+        $group->get('/{id}',\App\Application\Actions\Receipt\ViewReceiptAction::class);
+        $group->post('/',\App\Application\Actions\Receipt\CreateReceiptAction::class);
+        $group->put('/{id}',\App\Application\Actions\Receipt\UpdateReceiptAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Receipt\DeleteReceiptAction::class);
    
     });
 
@@ -118,13 +84,16 @@ return function (App $app, DI\Container $container) {
     
     $app->group('/streams', function (Group $group){
 
-        $group->get('/',ListStreamAction::class);
-        $group->get('/{id}',ViewStreamAction::class);
-        $group->post('/',CreateStreamAction::class);
-        $group->put('/{id}',UpdateStreamAction::class);
-        $group->delete('/{id}',DeleteStreamAction::class);
+        $group->get('/',\App\Application\Actions\Stream\ListStreamAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Stream\SearchStreamAction::class);
+        $group->get('/{id}',\App\Application\Actions\Stream\ViewStreamAction::class);
+        $group->post('/',\App\Application\Actions\Stream\CreateStreamAction::class);
+        $group->put('/{id}',\App\Application\Actions\Stream\UpdateStreamAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Stream\DeleteStreamAction::class);
    
     });
+
+
     $app->group('/suppliers', function (Group $group){
 
         $group->get('/',\App\Application\Actions\Supplier\ListSupplierAction::class);
@@ -150,13 +119,15 @@ return function (App $app, DI\Container $container) {
 
     $app->group('/accounts', function (Group $group){
 
-        $group->get('/',ListAccountAction::class);
-        $group->get('/{id}',ViewAccountAction::class);
-        $group->post('/',CreateAccountAction::class);
-        $group->put('/{id}',UpdateAccountAction::class);
-        $group->delete('/{id}',DeleteAccountAction::class);
+        $group->get('/',\App\Application\Actions\Account\ListAccountAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Account\SearchAccountAction::class);
+        $group->get('/{id}',\App\Application\Actions\Account\ViewAccountAction::class);
+        $group->post('/',\App\Application\Actions\Account\CreateAccountAction::class);
+        $group->put('/{id}',\App\Application\Actions\Account\UpdateAccountAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Account\DeleteAccountAction::class);
    
     });
+
 
     $app->group('/authentication', function (Group $group){
       
@@ -179,14 +150,21 @@ return function (App $app, DI\Container $container) {
 
     });
 
+
+
+
     $app->group('/scopes', function (Group $group){
 
-        $group->get('/',ListScopeAction::class);
-        $group->get('/{id}',ViewScopeAction::class);
-        $group->post('/',CreateScopeAction::class);
-        $group->put('/{id}',UpdateScopeAction::class);
-        $group->delete('/{id}',DeleteScopeAction::class);
+        $group->get('/',\App\Application\Actions\Scope\ListScopeAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\Scope\SearchScopeAction::class);
+        $group->get('/{id}',\App\Application\Actions\Scope\ViewScopeAction::class);
+        $group->post('/',\App\Application\Actions\Scope\CreateScopeAction::class);
+        $group->put('/{id}',\App\Application\Actions\Scope\UpdateScopeAction::class);
+        $group->delete('/{id}',\App\Application\Actions\Scope\DeleteScopeAction::class);
+   
     });
+
+
 
 
     $app->group('/customers', function (Group $group){
@@ -248,12 +226,17 @@ return function (App $app, DI\Container $container) {
 
     $app->group('/users', function (Group $group){
 
-        $group->get('/',\App\Application\Actions\Customer\ListUserAction::class);
-        $group->get('/{id}',\App\Application\Actions\Customer\ViewUserAction::class);
-        $group->post('/',\App\Application\Actions\Customer\CreateUserAction::class);
-        $group->put('/{id}',\App\Application\Actions\Customer\UpdateUserAction::class);
-        $group->delete('/{id}',\App\Application\Actions\Customer\DeleteUserAction::class);
+        $group->get('/',\App\Application\Actions\User\ListUserAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\User\SearchUserAction::class);
+        $group->get('/{id}',\App\Application\Actions\User\ViewUserAction::class);
+        $group->post('/',\App\Application\Actions\User\CreateUserAction::class);
+        $group->put('/{id}',\App\Application\Actions\User\UpdateUserAction::class);
+        $group->delete('/{id}',\App\Application\Actions\User\DeleteUserAction::class);
+   
     });
+
+
+
 
     $app->post("/token", function ($request, $response, $arguments) {
         

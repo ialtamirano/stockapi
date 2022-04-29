@@ -1,25 +1,42 @@
 <?php
 declare(strict_types=1);
-//alexsss
+
 namespace App\Application\Actions\User;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\User\Service\UserUpdate;
 
-class UpdateUserAction extends UserAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateUserAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,UserUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $userId = (int) $this->resolveArg('id');
-        $user = $this->getFormData();
-       
-        $user->id = $this->userRepository->update($userId,$user);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("user of id `$user->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($user);
+        $this->logger->info("User of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

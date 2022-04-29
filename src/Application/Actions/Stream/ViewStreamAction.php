@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Stream;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Stream\Service\StreamView;
 
-class ViewStreamAction extends StreamAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class ViewStreamAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,StreamView $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $streamId = (int) $this->resolveArg('id');
-        $stream = $this->streamRepository->findById($streamId);
 
-        $this->logger->info("Stream of id `${streamId}` was viewed.");
+        
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($stream);
+        $formData = $this->service->view($Id);
+
+        $this->logger->info("Stream of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

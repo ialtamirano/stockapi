@@ -3,20 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\User;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\User\Service\UserDelete;
 
-class DeleteUserAction extends UserAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class DeleteUserAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,UserDelete $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $UserId = (int) $this->resolveArg('id');
-        $User = $this->userRepository->delete($UserId);
 
-        $this->logger->info("User of id `${UserId}` was deleted.");
+        //$partNumberFormData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        return $this->respondWithData($User);
+        $result = $this->service->delete($Id);
+
+        $this->logger->info("User of id ".$Id." was deleted successfully.");
+
+        return $this->respondWithData($result);
     }
 }

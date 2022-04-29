@@ -3,23 +3,40 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Receipt;
 
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Application\Actions\Action;
+use App\Domain\Receipt\Service\ReceiptUpdate;
 
-class UpdateReceiptAction extends ReceiptAction
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
+
+class UpdateReceiptAction extends Action
 {
+
+    
+    private $service;
+
+    public function __construct( LoggerInterface $logger,ReceiptUpdate $service)
+    {
+        parent::__construct($logger);
+       
+        $this->service = $service;
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
 
-        $receiptId = (int) $this->resolveArg('id');
-        $receipt = $this->getFormData();
-       
-        $receipt->id = $this->receiptRepository->update($receiptId,$receipt);
+        $formData = $this->getFormData();
+        $Id = (int) $this->resolveArg('id');
 
-        $this->logger->info("Receipt of id `$receipt->id` was updated.");
+        $formData->id = $this->service->update($Id,$formData);
 
-        return $this->respondWithData($receipt);
+        $this->logger->info("Receipt of id ".$formData->id." was updated successfully.");
+
+        return $this->respondWithData($formData);
     }
 }

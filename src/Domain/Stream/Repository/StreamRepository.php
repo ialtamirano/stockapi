@@ -1,15 +1,16 @@
 <?php
-declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Stream;
+namespace App\Domain\Stream\Repository;
 
-use App\Domain\Stream\StreamNotFoundException;
-use App\Domain\Stream\StreamRepository;
+use App\Domain\DomainException\DomainRecordNotFoundException;
+
 
 use PDO;
 use \RedBeanPHP\R as R;
-
-class StreamModel implements StreamRepository
+/**
+ * Repository.
+ */
+final class StreamRepository
 {
     /**
      * @var PDO The database connection
@@ -27,12 +28,33 @@ class StreamModel implements StreamRepository
     }
 
 
+    
     public function findAll():array
     {
         $streams = R::findAll('stream');
 
         return R::exportAll($streams);
     }
+
+    public function search($query):array
+    {
+        
+        $streams = R::find('stream', 'code LIKE ? OR name LIKE ? OR description LIKE ? OR tags LIKE ?', [
+            '%' . $query . '%',
+            '%' . $query . '%',
+            '%' . $query . '%',
+            '%' . $query . '%'
+        ]);
+
+        if ( count($streams) == 0)
+        {
+            throw new DomainRecordNotFoundException();
+        }
+
+        return R::exportAll($streams);
+    }
+
+   
 
     public function findById($id)
     {
@@ -42,21 +64,23 @@ class StreamModel implements StreamRepository
       
         if ( $stream->id == 0)
         {
-            throw new StreamNotFoundException();
+            throw new DomainRecordNotFoundException();
         }
         return $stream;
     }
 
-    public function create($stream)
-    {
+
+
+
+    public function create($stream) {
 
         $bean = R::dispense('stream');
 
         $bean->import($stream);
-
+        
         return $id = R::store($bean);
     }
-    
+
     public function update($id, $stream)
     {
 
@@ -67,6 +91,7 @@ class StreamModel implements StreamRepository
         return $id = R::store($bean);
     }
 
+
     public function delete($id)
     {
 
@@ -74,7 +99,7 @@ class StreamModel implements StreamRepository
 
         if ( $stream->id == 0)
         {
-            throw new StreamNotFoundException();
+            throw new DomainRecordNotFoundException();
         }
 
         R::trash( $stream);
@@ -83,4 +108,26 @@ class StreamModel implements StreamRepository
 
         return true;
     }
+
+
+
+
+    public function findByCode($streamCode)
+    {
+
+        $stream = R::findOne('stream', 'code =  ? ', [
+            $streamCode
+        ]);
+
+        if($stream){
+            if ( $stream->id == 0){
+                throw new DomainRecordNotFoundException();
+            }        
+        }
+
+        return $stream;
+    }
+
+
+    
 }
