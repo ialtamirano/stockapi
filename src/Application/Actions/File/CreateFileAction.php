@@ -34,13 +34,13 @@ class CreateFileAction extends Action
     protected function action(): Response
     {
 
-        //$formData = $this->request;
-
+       
         
         $uploadedFiles = $this->request->getUploadedFiles();
-        $entity_name =  $this->request->getQueryParams()['entity_name'];
-        $entity_id   =  $this->request->getQueryParams()['entity_id'];
-        //var_dump($uploadedFiles);
+        $queryParams = $this->request->getQueryParams();
+        $entity_name =  $queryParams['entity_name'];
+        $entity_id   =  $queryParams['entity_id'];
+     
 
 
         $files = [];
@@ -61,7 +61,7 @@ class CreateFileAction extends Action
 
                     $fileData->id = $this->service->create($fileData);
                    
-                    $destinationFilePath = "\\".$entity_name."\\".$entity_id."\\". $filename;
+                    $destinationFilePath = "\\".$entity_name."\\".$entity_id."\\".$fileData->id."_". $filename;
 
                     $this->filesystem->write($destinationFilePath, $stream);
 

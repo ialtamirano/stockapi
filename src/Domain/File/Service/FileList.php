@@ -34,13 +34,36 @@ final class FileList
      *
      * @return int The new account ID
      */
-    public function findAll($entity_name, $entity_id): array
+    public function findAll($data): array
     {
        
-      
+        $this->validate($data);
+
         // Create account
-        $comments = $this->repository->findAll($entity_name, $entity_id);
-        return $comments;
+        $files = $this->repository->findAll($data->entity_name, $data->entity_id);
+        return $files;
+    }
+
+
+    private function validate($data): void
+    {
+        $errors = [];
+
+        // Here you can also use your preferred validation library
+
+        if (empty($data->entity_name)) {
+            $errors['entity_name'] = 'El código de transaccion es requerido!';
+        }
+
+        if (empty($data->entity_id)) {
+            $errors['entity_id'] = 'El Id de transaccion es requerido!';
+        }
+
+        
+
+        if ($errors) {
+            throw new DomainValidationException('Por favor verifique los datos de captura!', $errors);
+        }
     }
 
    

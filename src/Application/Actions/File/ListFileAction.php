@@ -33,7 +33,14 @@ class ListFileAction extends Action
         $entity_name =  $this->request->getQueryParams()['entity_name'];
         $entity_id   =  $this->request->getQueryParams()['entity_id'];
 
-        $data = $this->service->findAll( $entity_name,$entity_id);
+         
+        $fileData = new \stdClass;
+        //$fileData->name = $filename;
+
+        $fileData->entity_name = $entity_name;
+        $fileData->entity_id = $entity_id;
+
+        $data = $this->service->findAll( $fileData);
 
         return $this->respondWithData($data);
     }
