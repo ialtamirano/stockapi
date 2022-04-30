@@ -92,6 +92,12 @@ $errorMiddleware->setDefaultErrorHandler($errorHandler);
 $app->add(new Tuupola\Middleware\JwtAuthentication($settings->get('jwt_authentication')));
 
 
+//$adapter = new League\Flysystem\Local\LocalFilesystemAdapter($settings->get('rootPath'));
+//$app->add(new League\Flysystem\Filesystem($adapter));
+
+
+
+
 
 // Run App & Emit Response
 $response = $app->handle($request);

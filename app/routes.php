@@ -190,6 +190,17 @@ return function (App $app, DI\Container $container) {
    
     });
 
+    $app->group('/files', function (Group $group){
+
+        $group->get('/',\App\Application\Actions\File\ListFileAction::class);
+        $group->get('/search/{query}',\App\Application\Actions\File\SearchFileAction::class);
+        $group->get('/{id}',\App\Application\Actions\File\ViewFileAction::class);
+        $group->post('/',\App\Application\Actions\File\CreateFileAction::class);
+        $group->put('/{id}',\App\Application\Actions\File\UpdateFileAction::class);
+        $group->delete('/{id}',\App\Application\Actions\File\DeleteFileAction::class);
+   
+    });
+
 
     $app->group('/requisitions', function (Group $group){
 

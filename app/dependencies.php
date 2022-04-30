@@ -9,6 +9,8 @@ use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use \RedBeanPHP\R as R;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 
 
 
@@ -47,6 +49,12 @@ return function (ContainerBuilder $containerBuilder) {
             R::setup( $dsn, $username, $password);
 
             return new PDO($dsn, $username, $password);
+        },
+        Filesystem::class => function (ContainerInterface $c){
+
+            $settings = $c->get(SettingsInterface::class);
+            $adapter = new League\Flysystem\Local\LocalFilesystemAdapter($settings->get('rootPath'));
+            return new League\Flysystem\Filesystem($adapter);
         }
         
     ]);

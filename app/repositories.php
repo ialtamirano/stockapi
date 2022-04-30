@@ -6,18 +6,7 @@ declare(strict_types=1);
 
 
 
-use App\Domain\Account\AccountRepository;
 
-
-
-
-
-
-
-
-
-
-use App\Infrastructure\Persistence\Account\AccountModel;
 
 
 
@@ -32,10 +21,7 @@ return function (ContainerBuilder $containerBuilder) {
 
   
     
-    $containerBuilder->addDefinitions([
-        AccountRepository::class => \DI\autowire(AccountModel::class),
-    ]);
-
+ 
  
 
    

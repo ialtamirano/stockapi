@@ -23,6 +23,7 @@ return function (ContainerBuilder $containerBuilder) {
                     'level' => Logger::DEBUG,
                 ],
                 "determineRouteBeforeAppMiddleware" => true,
+
                 'jwt_authentication' => [
                     'secret' => $_ENV['JWT_SECRET'],
                     'algorithm' => 'HS256',
@@ -38,7 +39,8 @@ return function (ContainerBuilder $containerBuilder) {
                                 JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
                             ));
                     }
-                ],              
+                ], 
+                "rootPath" =>   __DIR__ .'/../files/',             
                 'db'     => [
                     'driver' => 'mysql',
                     'host' => 'localhost',
