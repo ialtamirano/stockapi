@@ -51,11 +51,12 @@ class CreateFileAction extends Action
 
                     $stream = (string) $uploadedFile->getStream();
                     $filename  = $uploadedFile->getClientFilename();
+                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
                     
                     $fileData = new \stdClass;
                     $fileData->name = $filename;
-
+                    $fileData->extension = $extension;
                     $fileData->entity_name = $entity_name;
                     $fileData->entity_id = $entity_id;
 
