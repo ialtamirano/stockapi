@@ -68,7 +68,7 @@ class CreateFileAction extends Action
 
                     $this->filesystem->write($destinationFilePath, $stream);
 
-                    //$fileData->user = $current_user;
+
                     array_push($files,$fileData);
                     
                 }
