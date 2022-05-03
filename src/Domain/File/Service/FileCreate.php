@@ -35,7 +35,7 @@ final class FileCreate
      *
      * @return int The new account ID
      */
-    public function create($data): int
+    public function create($data)
     {
         // Input validation
         $this->validateNew($data);
@@ -48,9 +48,9 @@ final class FileCreate
 */
       
         // Create account
-        $fileId = $this->repository->create($data);
+        $data = $this->repository->create($data);
 
-        return $fileId;
+        return $data;
     }
 
     /**

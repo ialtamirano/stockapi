@@ -3,10 +3,12 @@
 namespace App\Domain\Comment\Repository;
 
 use App\Domain\DomainException\DomainRecordNotFoundException;
+use App\Domain\User\Repository\UserRepository;
 
 
 use PDO;
 use \RedBeanPHP\R as R;
+use \RedBeanPHP\Finder;
 /**
  * Repository.
  */
@@ -16,29 +18,31 @@ final class CommentRepository
      * @var PDO The database connection
      */
     private $connection;
+    private $userRepository;
 
     /**
      * Constructor.
      *
      * @param PDO $connection The database connection
      */
-    public function __construct(PDO $connection)
+    public function __construct(PDO $connection, UserRepository $userRepository)
     {
         $this->connection = $connection;
+        $this->userRepository = $userRepository;
     }
 
 
     
     public function findAll($entity_name, $entity_id):array
     {
-        //$comments = R::findAll('comment');
         
-        $comments = R::findAll('comment', 
-           ' entity_name = ? AND entity_id = ? ', [
-            $entity_name, 
-            $entity_id
-            
-        ]);
+        $result = R::getAll('SELECT comment.*,user.full_name,user.email_address FROM comment
+            INNER JOIN user ON user.id = comment.created_by
+             WHERE entity_name = ? AND entity_id = ?', [ $entity_name, 
+            $entity_id]);
+
+
+            $comments = R::convertToBeans('comments', $result); 
 
         return R::exportAll($comments);
     }
@@ -66,13 +70,23 @@ final class CommentRepository
     public function findById($id)
     {
 
-        $comment = R::load('comment', $id);
+        //$comment = R::load('comment', $id);
 
-      
-        if ( $comment->id == 0)
+
+        $comment = R::getRow('SELECT comment.*, user.full_name,user.email_address FROM comment
+            INNER JOIN user ON user.id = comment.created_by
+             WHERE comment.id = ?', [ $id]);
+
+
+        $comment = R::convertToBean('comment',$comment);
+
+         if ( $comment->id == 0)
         {
             throw new DomainRecordNotFoundException();
         }
+
+        //$comment->user =  $this->userRepository->findById($comment->created_by);
+
         return $comment;
     }
 
@@ -84,8 +98,13 @@ final class CommentRepository
         $bean = R::dispense('comment');
 
         $bean->import($comment);
+        $id = R::store($bean);
+
+
+        $comment = $this->findById($id);
+
         
-        return $id = R::store($bean);
+        return $comment;
     }
 
     public function update($id, $comment)

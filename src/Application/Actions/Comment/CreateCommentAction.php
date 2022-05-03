@@ -30,11 +30,14 @@ class CreateCommentAction extends Action
     protected function action(): Response
     {
 
+        $current_user = $this->request->getAttribute("current_user");
+
         $formData = $this->getFormData();
+        $formData->created_by = $current_user->id;
+        
+        $formData  = $this->service->create($formData);
 
-        $formData->id = $this->service->create($formData);
-
-        $this->logger->info("Comment of id ".$formData->id." was created successfully.");
+        //$this->logger->info("Comment of id ".$formData->id." was created successfully.");
 
         return $this->respondWithData($formData);
     }

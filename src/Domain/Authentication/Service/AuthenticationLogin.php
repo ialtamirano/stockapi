@@ -66,8 +66,7 @@ final class AuthenticationLogin
         }
 
         $hash_password = $user->password;
-        //var_dump($data->password);
-        //exit;
+        
         $verify = password_verify($data->password,$hash_password);
 
         if($verify==false)
@@ -111,7 +110,7 @@ final class AuthenticationLogin
     private function generateToken($email){
         
             $now = time();
-            $future = strtotime('+1 hour',$now);
+            $future = strtotime('+2 hour',$now);
             $secret = $_ENV['JWT_SECRET'];
     
             $payload = [
@@ -121,6 +120,7 @@ final class AuthenticationLogin
               "scopes" => []
             ];
     
+          
             return JWT::encode($payload,$secret,"HS256");
         
     }

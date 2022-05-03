@@ -43,10 +43,10 @@ return function (ContainerBuilder $containerBuilder) {
                 "rootPath" =>   __DIR__ .'/../files/',             
                 'db'     => [
                     'driver' => 'mysql',
-                    'host' => 'localhost',
-                    'username' => 'root',
-                    'database' => 'stockdb',
-                    'password' => '',
+                    'host' => "localhost",
+                    'username' => "root",
+                    'database' => "stockdb",
+                    'password' => "",
                     'charset' => 'utf8mb4',
                     'collation' => 'utf8mb4_unicode_ci',
                     'flags' => [

@@ -54,6 +54,8 @@ abstract class Action
         $this->response = $response;
         $this->args = $args;
 
+       
+
         try {
             return $this->action();
         } catch (DomainRecordNotFoundException $e) {

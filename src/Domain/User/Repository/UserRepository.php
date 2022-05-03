@@ -128,6 +128,22 @@ final class UserRepository
         return $user;
     }
 
+    public function findByEmail($userEmail)
+    {
+
+        $user = R::findOne('user', 'email_address =  ? ', [
+            $userEmail
+        ]);
+
+        if($user){
+            if ( $user->id == 0){
+                throw new DomainRecordNotFoundException();
+            }        
+        }
+
+        return $user;
+    }
+
 
     
 }

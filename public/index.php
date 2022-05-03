@@ -47,7 +47,7 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-//SI NO SE AGREGA TRUENA
+//Ivan Altamirano - Se requiere agregar este Middleware
 $app->addBodyParsingMiddleware();
 
 // Register middleware
@@ -79,7 +79,7 @@ $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
 $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
 register_shutdown_function($shutdownHandler);
 
-// Add Routing Middleware
+// Add Routing Middleware 
 $app->addRoutingMiddleware();
 
 
@@ -91,9 +91,6 @@ $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 $app->add(new Tuupola\Middleware\JwtAuthentication($settings->get('jwt_authentication')));
 
-
-//$adapter = new League\Flysystem\Local\LocalFilesystemAdapter($settings->get('rootPath'));
-//$app->add(new League\Flysystem\Filesystem($adapter));
 
 
 

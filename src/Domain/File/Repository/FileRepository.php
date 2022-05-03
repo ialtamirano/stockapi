@@ -84,8 +84,12 @@ final class FileRepository
         $bean = R::dispense('file');
 
         $bean->import($file);
+
+        $id = R::store($bean);
+
+        $file = $this->findById($id);
         
-        return $id = R::store($bean);
+        return $file;
     }
 
     public function update($id, $file)
