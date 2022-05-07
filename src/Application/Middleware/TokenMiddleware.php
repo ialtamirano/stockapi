@@ -11,6 +11,9 @@ use Psr\Log\LoggerInterface;
 use App\Domain\User\Service\UserFindByEmail;
 
 ///Created by Ivan Altamirano on 2022-05-02
+/**
+ * Purpose: Put the current_user attribute on the request 
+ */
 class TokenMiddleware implements Middleware
 {
 
@@ -33,15 +36,13 @@ class TokenMiddleware implements Middleware
     {
 
 
-        //$this->logger->info("Middleware called successfully");
+
 
         $token = $request->getAttribute("token");
 
 
         if (isset($token)) {
 
-            //$this->logger->info("Token Founded");
-            //$this->logger->info($token['jti']);
 
             $user = $this->service->find($token['jti']);
 

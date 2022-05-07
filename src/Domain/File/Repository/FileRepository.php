@@ -33,14 +33,26 @@ final class FileRepository
     {
         //$files = R::findAll('file');
         
-        $files = R::findAll('file', 
+       /* $files = R::findAll('file', 
            ' entity_name = ? AND entity_id = ? ', [
             $entity_name, 
             $entity_id
             
         ]);
 
+        return R::exportAll($files);*/
+
+
+        $result = R::getAll('SELECT file.*,user.full_name,user.email_address FROM file
+            INNER JOIN user ON user.id = file.created_by
+            WHERE entity_name = ? AND entity_id = ?', [ $entity_name, $entity_id]);
+
+
+            $files = R::convertToBeans('files', $result); 
+
         return R::exportAll($files);
+
+
     }
 
     public function search($query):array
