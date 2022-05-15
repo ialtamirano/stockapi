@@ -198,6 +198,7 @@ return function (App $app, DI\Container $container) {
         $group->post('/',\App\Application\Actions\File\CreateFileAction::class);
         $group->put('/{id}',\App\Application\Actions\File\UpdateFileAction::class);
         $group->delete('/{id}',\App\Application\Actions\File\DeleteFileAction::class);
+        $group->get('/serve/{id}',\App\Application\Actions\File\ServeFileAction::class);
    
     });
 
@@ -289,48 +290,9 @@ return function (App $app, DI\Container $container) {
             ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     });
 
+    /*$app->post("/webhook-test", function($request,$response) use{
 
-    $app->post("/current-user", function ($request, $response, $arguments) {
-        
-        $requested_scopes = $request->getParsedBody() ?: [];
-    
-        $valid_scopes = [
-            "todo.create",
-            "todo.read",
-            "todo.update",
-            "todo.delete",
-            "todo.list",
-            "todo.all"
-        ];
-    
-        $scopes = array_filter($requested_scopes, function ($needle) use ($valid_scopes) {
-            return in_array($needle, $valid_scopes);
-        });
-    
-        $now = new DateTime();
-        $future = new DateTime("now +2 hours");
-        $server = $request->getServerParams();
-    
-        $jti = (new Base62)->encode(random_bytes(16));
-    
-        $payload = [
-            "iat" => $now->getTimeStamp(),
-            "exp" => $future->getTimeStamp(),
-            "jti" => $jti,
-            "sub" => $server["PHP_AUTH_USER"],
-            "scope" => $scopes
-        ];
-    
-        $secret = getenv("JWT_SECRET");
-        $token = JWT::encode($payload, $secret, "HS256");
-    
-        $data["token"] = $token;
-        $data["expires"] = $future->getTimeStamp();
-    
-        return $response->withStatus(201)
-            ->withHeader("Content-Type", "application/json")
-            ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-    });
+    }*/
 
 
 

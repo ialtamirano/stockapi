@@ -131,4 +131,20 @@ abstract class Action
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus($payload->getStatusCode());
     }
+
+    /**
+     * @param array|object|null $data
+     * @param int $statusCode
+     * @return Response
+     */
+    protected function respondWithContent($content = null,$mimeType, int $statusCode = 200): Response
+    {
+
+        $this->response->getBody()->write($content);
+        return $this->response
+        ->withHeader('Content-Type', $mimeType)
+        ->withStatus($statusCode);
+    }
+
+    
 }

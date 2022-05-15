@@ -1,8 +1,11 @@
 # Repository Pattern
-El patron de desarrollo que usaremos para esta API se conoce como Repository Pattern lectura en este link
-https://deviq.com/design-patterns/repository-pattern
+El patron de desarrollo que usaremos para esta API se conoce como ADR ( Action-Domain-Response ), les dejo una lectura en este link
+https://odan.github.io/slim4-skeleton/architecture.html
+https://en.wikipedia.org/wiki/Action%E2%80%93domain%E2%80%93responder
+
 
 # REST API CREATION
+-En la carpeta 'src/Domain' creamos una carpeta con el nombre del Dominio
 -Crear una Interface/Repositorio en el folder 'src/Domain/'
 -Crear un Modelo en la carpeta 'src/Infrastructure/Persistence'
 -Crear las Actions en la carpeta 'src/Application/Actions'
