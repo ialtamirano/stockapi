@@ -30,13 +30,45 @@ class UpdateFileAction extends Action
     protected function action(): Response
     {
 
-        $formData = $this->getFormData();
+        $current_user = $this->request->getAttribute("current_user");
+
+        $uploadedFiles = $this->request->getUploadedFiles();
+        $queryParams = $this->request->getQueryParams();
+        $entity_name =  $queryParams['entity_name'];
+        $entity_id   =  $queryParams['entity_id'];
         $Id = (int) $this->resolveArg('id');
 
-        $formData->id = $this->service->update($Id,$formData);
 
-        $this->logger->info("File of id ".$formData->id." was updated successfully.");
+        $files = [];
 
-        return $this->respondWithData($formData);
+        // handle multiple inputs with the same key
+            foreach ($uploadedFiles as $uploadedFile) {
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+
+                    $stream = (string) $uploadedFile->getStream();
+                    $filename  = $uploadedFile->getClientFilename();
+                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+
+                   
+                    $fileData = new \stdClass;
+                    $file->id = $Id;
+                    $fileData->name = $filename;
+                    $fileData->extension = $extension;
+                    $fileData->entity_name = $entity_name;
+                    $fileData->entity_id = $entity_id;
+                    $fileData->created_by = $current_user->id;
+                   
+                    $fileData = $this->service->update($fileData);
+                   
+                    $destinationFilePath = "\\".$entity_name."\\".$entity_id."\\".$fileData->id."_". $filename;
+
+                    $this->filesystem->overwrite($destinationFilePath, $stream);
+
+                    array_push($files,$fileData);
+                    
+                }
+            }
+    
+        return $this->respondWithData($files);
     }
 }

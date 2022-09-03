@@ -71,9 +71,7 @@ final class FileUpdate
         }
 
 
-        if (empty($data->text)) {
-            $errors['text'] = 'El texto del comentario es requerido!';
-        }
+    
 
         if ($errors) {
             throw new DomainValidationException('Por favor verifique los datos de captura!', $errors);

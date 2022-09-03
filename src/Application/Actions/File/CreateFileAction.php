@@ -60,14 +60,12 @@ class CreateFileAction extends Action
                     $fileData->entity_name = $entity_name;
                     $fileData->entity_id = $entity_id;
                     $fileData->created_by = $current_user->id;
-                    
-
+                   
                     $fileData = $this->service->create($fileData);
                    
                     $destinationFilePath = "\\".$entity_name."\\".$entity_id."\\".$fileData->id."_". $filename;
 
                     $this->filesystem->write($destinationFilePath, $stream);
-
 
                     array_push($files,$fileData);
                     

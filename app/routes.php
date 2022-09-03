@@ -2,10 +2,6 @@
 declare(strict_types=1);
 
 
-
-
-
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -56,16 +52,13 @@ return function (App $app, DI\Container $container) {
     });
 
     $app->group('/receipts', function (Group $group){
-
         $group->get('/',\App\Application\Actions\Receipt\ListReceiptAction::class);
         $group->get('/search/{query}',\App\Application\Actions\Receipt\SearchReceiptAction::class);
         $group->get('/{id}',\App\Application\Actions\Receipt\ViewReceiptAction::class);
         $group->post('/',\App\Application\Actions\Receipt\CreateReceiptAction::class);
         $group->put('/{id}',\App\Application\Actions\Receipt\UpdateReceiptAction::class);
         $group->delete('/{id}',\App\Application\Actions\Receipt\DeleteReceiptAction::class);
-   
     });
-
 
 
     $app->group('/locations', function (Group $group){
@@ -198,7 +191,7 @@ return function (App $app, DI\Container $container) {
         $group->post('/',\App\Application\Actions\File\CreateFileAction::class);
         $group->put('/{id}',\App\Application\Actions\File\UpdateFileAction::class);
         $group->delete('/{id}',\App\Application\Actions\File\DeleteFileAction::class);
-        $group->get('/serve/{id}',\App\Application\Actions\File\ServeFileAction::class);
+        $group->get('/serve/{id}',\App\Application\Actions\File\ServeFileAction::class);       
    
     });
 

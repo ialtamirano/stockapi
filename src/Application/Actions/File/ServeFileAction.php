@@ -31,12 +31,9 @@ class ServeFileAction extends Action
      * {@inheritdoc}
      */
     protected function action(): Response
-    {
-
-        
+    {       
         $id =  $this->resolveArg('id');
        
-
         $file = $this->service->view($id);
 
         $destinationFilePath = "\\".$file->entity_name."\\".$file->entity_id."\\".$file->id."_". $file->name;
@@ -47,12 +44,9 @@ class ServeFileAction extends Action
            // exit;
             $response = $this->filesystem->read($destinationFilePath);
 
-
         } catch (FilesystemException | UnableToReadFile $exception) {
             // handle the error
-        }
-
-        //$formData = $this->service->view($Id);
+        }    
 
         $this->logger->info("File of id ".$file->id." was updated successfully.");
 
