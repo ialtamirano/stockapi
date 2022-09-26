@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\Actions\File;
@@ -13,13 +14,13 @@ use Psr\Log\LoggerInterface;
 class UpdateFileAction extends Action
 {
 
-    
+
     private $service;
 
-    public function __construct( LoggerInterface $logger,FileUpdate $service)
+    public function __construct(LoggerInterface $logger, FileUpdate $service)
     {
         parent::__construct($logger);
-       
+
         $this->service = $service;
     }
 
@@ -42,33 +43,33 @@ class UpdateFileAction extends Action
         $files = [];
 
         // handle multiple inputs with the same key
-            foreach ($uploadedFiles as $uploadedFile) {
-                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+        foreach ($uploadedFiles as $uploadedFile) {
+            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
 
-                    $stream = (string) $uploadedFile->getStream();
-                    $filename  = $uploadedFile->getClientFilename();
-                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                $stream = (string) $uploadedFile->getStream();
+                $filename  = $uploadedFile->getClientFilename();
+                $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
-                   
-                    $fileData = new \stdClass;
-                    $file->id = $Id;
-                    $fileData->name = $filename;
-                    $fileData->extension = $extension;
-                    $fileData->entity_name = $entity_name;
-                    $fileData->entity_id = $entity_id;
-                    $fileData->created_by = $current_user->id;
-                   
-                    $fileData = $this->service->update($fileData);
-                   
-                    $destinationFilePath = "\\".$entity_name."\\".$entity_id."\\".$fileData->id."_". $filename;
 
-                    $this->filesystem->overwrite($destinationFilePath, $stream);
+                $fileData = new \stdClass;
+                $fileData->id = $Id;
+                $fileData->name = $filename;
+                $fileData->extension = $extension;
+                $fileData->entity_name = $entity_name;
+                $fileData->entity_id = $entity_id;
+                $fileData->created_by = $current_user->id;
 
-                    array_push($files,$fileData);
-                    
-                }
+                $fileData = $this->service->update($Id,$fileData);
+
+                $destinationFilePath = "\\" . $entity_name . "\\" . $entity_id . "\\" . $fileData->id . "_" . $filename;
+
+                $this->filesystem->overwrite($destinationFilePath, $stream);
+
+                array_push($files, $fileData);
             }
-    
+        }
+
+        $this->logger->info("File of id " . $Id . " was updated successfully...");
         return $this->respondWithData($files);
     }
 }
