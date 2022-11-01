@@ -34,7 +34,7 @@
         "slim/slim": "^4.8",
         "tuupola/cors-middleware": "^1.2",
         "tuupola/slim-jwt-auth": "^3.5",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^0.8.1",
