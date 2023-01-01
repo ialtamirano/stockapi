@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72863d687333e99ecc382328c52b5474",
+    "content-hash": "45f6709cb3ed2016bd849f2c652016e5",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -2449,34 +2449,34 @@
         },
         {
             "name": "tuupola/slim-jwt-auth",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tuupola/slim-jwt-auth.git",
-                "reference": "d9ed8bca77a0ef2a95ab48e65ddc26073b99c5ff"
+                "reference": "ef05b93d4dac7307ef6ef3b62feaff30c32e82c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tuupola/slim-jwt-auth/zipball/d9ed8bca77a0ef2a95ab48e65ddc26073b99c5ff",
-                "reference": "d9ed8bca77a0ef2a95ab48e65ddc26073b99c5ff",
+                "url": "https://api.github.com/repos/tuupola/slim-jwt-auth/zipball/ef05b93d4dac7307ef6ef3b62feaff30c32e82c1",
+                "reference": "ef05b93d4dac7307ef6ef3b62feaff30c32e82c1",
                 "shasum": ""
             },
             "require": {
                 "firebase/php-jwt": "^3.0|^4.0|^5.0",
-                "php": "^7.1|^8.0",
+                "php": "^7.2|^8.0",
                 "psr/http-message": "^1.0",
                 "psr/http-server-middleware": "^1.0",
                 "psr/log": "^1.0|^2.0|^3.0",
-                "tuupola/callable-handler": "^0.3.0|^0.4.0|^1.0",
-                "tuupola/http-factory": "^0.4.0|^1.0.2"
+                "tuupola/callable-handler": "^1.0",
+                "tuupola/http-factory": "^1.3"
             },
             "require-dev": {
                 "equip/dispatch": "^2.0",
                 "laminas/laminas-diactoros": "^2.0",
                 "overtrue/phplint": "^1.0",
-                "phpstan/phpstan": "^0.12.43",
-                "phpunit/phpunit": "^7.0|^8.0|^9.0",
-                "squizlabs/php_codesniffer": "^3.4"
+                "phpstan/phpstan": "^1.8",
+                "phpunit/phpunit": "^7.0|^8.5.30|^9.0",
+                "squizlabs/php_codesniffer": "^3.7"
             },
             "type": "library",
             "extra": {
@@ -2513,7 +2513,7 @@
             ],
             "support": {
                 "issues": "https://github.com/tuupola/slim-jwt-auth/issues",
-                "source": "https://github.com/tuupola/slim-jwt-auth/tree/3.6.0"
+                "source": "https://github.com/tuupola/slim-jwt-auth/tree/3.7.0"
             },
             "funding": [
                 {
@@ -2521,7 +2521,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-12T11:15:02+00:00"
+            "time": "2022-12-23T11:23:05+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -4920,5 +4920,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
