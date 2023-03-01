@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72863d687333e99ecc382328c52b5474",
+    "content-hash": "76a5f25982f6e4b7b7a9da035959965a",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -568,16 +568,16 @@
         },
         {
             "name": "league/oauth2-server",
-            "version": "8.3.4",
+            "version": "8.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-server.git",
-                "reference": "0c2f32cd766861f3add4b95c49c5fcef3427e133"
+                "reference": "539f4340c14eca8d44578fd118f6bdc0ad16d1ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/0c2f32cd766861f3add4b95c49c5fcef3427e133",
-                "reference": "0c2f32cd766861f3add4b95c49c5fcef3427e133",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/539f4340c14eca8d44578fd118f6bdc0ad16d1ce",
+                "reference": "539f4340c14eca8d44578fd118f6bdc0ad16d1ce",
                 "shasum": ""
             },
             "require": {
@@ -644,7 +644,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/oauth2-server/issues",
-                "source": "https://github.com/thephpleague/oauth2-server/tree/8.3.4"
+                "source": "https://github.com/thephpleague/oauth2-server/tree/8.4.0"
             },
             "funding": [
                 {
@@ -652,7 +652,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-04-07T21:33:04+00:00"
+            "time": "2023-02-15T16:08:35+00:00"
         },
         {
             "name": "league/uri",
@@ -4920,5 +4920,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
